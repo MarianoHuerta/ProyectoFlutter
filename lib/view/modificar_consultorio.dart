@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '/components/personal_textField.dart';
 import '/components/personal_button.dart';
 
-class RegistrarConsultorio extends StatefulWidget {
-  RegistrarConsultorio({ Key? key }) : super(key: key);
+class ModificarConsultorio extends StatefulWidget {
+  ModificarConsultorio({ Key? key }) : super(key: key);
 
   @override
-  _RegistrarConsultorioState createState() => _RegistrarConsultorioState();
+  _ModificarConsultorioState createState() => _ModificarConsultorioState();
 }
 
-class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
+class _ModificarConsultorioState extends State<ModificarConsultorio>{
 
   String _numero = '';
   String _opcion = 'Volar';
@@ -38,11 +38,7 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
           Divider(),
           Divider(),
           Divider(),
-          PersonalButton('Registrar', icono: Icons.add),
-          Divider(),
           PersonalButton('Modificar', icono: Icons.update),
-          Divider(),
-          PersonalButton('Eliminar', icono: Icons.delete),
         ],
       )
     );

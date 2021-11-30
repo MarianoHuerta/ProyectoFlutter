@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '/components/personal_textField.dart';
 import '/components/personal_button.dart';
 
-class FormRol extends StatefulWidget {
-  FormRol({ Key? key }) : super(key: key);
+class RegistrarRol extends StatefulWidget {
+  RegistrarRol({ Key? key }) : super(key: key);
 
   @override
-  _FormRolState createState() => _FormRolState();
+  _RegistrarRolState createState() => _RegistrarRolState();
 }
 
-class _FormRolState extends State<FormRol>{
+class _RegistrarRolState extends State<RegistrarRol>{
 
   String _numero = '';
   String _opcion = 'Volar';

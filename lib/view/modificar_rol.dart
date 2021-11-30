@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '/components/personal_textField.dart';
 import '/components/personal_button.dart';
 
-class RegistrarConsultorio extends StatefulWidget {
-  RegistrarConsultorio({ Key? key }) : super(key: key);
+class ModificarRol extends StatefulWidget {
+  ModificarRol({ Key? key }) : super(key: key);
 
   @override
-  _RegistrarConsultorioState createState() => _RegistrarConsultorioState();
+  _ModificarRolState createState() => _ModificarRolState();
 }
 
-class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
+class _ModificarRolState extends State<ModificarRol>{
 
   String _numero = '';
   String _opcion = 'Volar';
@@ -22,7 +22,7 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Consultorios'),
+        title: Text('Roles'),
       ),
 
       body: ListView(
@@ -31,18 +31,12 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
           vertical: 20.0,
         ),
         children: [
-          PersonalTextField('Numero', 'Numero Consultorio', icono: Icons.meeting_room),
-          Divider(),
-          _ListaDoctores(),
+          PersonalTextField('Nombre', 'Nombre Rol', icono: Icons.accessibility),
           Divider(),
           Divider(),
           Divider(),
-          Divider(),
-          PersonalButton('Registrar', icono: Icons.add),
           Divider(),
           PersonalButton('Modificar', icono: Icons.update),
-          Divider(),
-          PersonalButton('Eliminar', icono: Icons.delete),
         ],
       )
     );
@@ -61,7 +55,7 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
     return lista;
   }
 
-  Widget _ListaDoctores() {
+  Widget _ListaRoles() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(2.0),
