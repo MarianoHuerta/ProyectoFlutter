@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'view/registrar_consultorio.dart';
 import 'view/agendar_citas.dart';
 import 'view/consulta_citas.dart';
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
         routes: <String, WidgetBuilder>{
           '/consulta-citas': (BuildContext context) => ConsultaCitasPage(),
-          '/agendar-cita': (BuildContext context) => FormCitas()
+          '/agendar-cita': (BuildContext context) => FormCitas(),
+          '/registrar-consultorio': (BuildContext context) => FormConsultorio()
         });
   }
 }
