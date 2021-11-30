@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'view/registrar_consultorio.dart';
+import 'view/registrar_rol.dart';
 import 'view/agendar_citas.dart';
 import 'view/consulta_citas.dart';
 
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/consulta-citas': (BuildContext context) => ConsultaCitasPage(),
           '/agendar-cita': (BuildContext context) => FormCitas(),
-          '/registrar-consultorio': (BuildContext context) => FormConsultorio()
+          '/registrar-consultorio': (BuildContext context) => FormConsultorio(),
+          '/registrar-rol': (BuildContext context) => FormRol()
         });
   }
 }

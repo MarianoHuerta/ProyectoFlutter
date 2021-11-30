@@ -25,7 +25,7 @@ class PersonalButton extends StatelessWidget {
           textStyle: TextStyle(
             color: Colors.white,
             //fontFamily: "Poppis-Regular",
-            fontSize: 10.0,
+            fontSize: 16.0,
           )
         ),
         label: Text(this.texto),

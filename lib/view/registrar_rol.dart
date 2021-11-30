@@ -22,7 +22,7 @@ class _FormRolState extends State<FormRol>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Consultorios'),
+        title: Text('Roles'),
       ),
 
       body: ListView(
@@ -31,12 +31,12 @@ class _FormRolState extends State<FormRol>{
           vertical: 20.0,
         ),
         children: [
-          PersonalTextField('Caja', 'label', icono: Icons.accessibility),
-          Divider(),
-          _ListaRoles(),
+          PersonalTextField('Nombre', 'Nombre Rol', icono: Icons.accessibility),
           Divider(),
           Divider(),
           Divider(),
+          Divider(),
+          PersonalButton('Registrar', icono: Icons.add),
           Divider(),
           PersonalButton('Modificar', icono: Icons.update),
           Divider(),
