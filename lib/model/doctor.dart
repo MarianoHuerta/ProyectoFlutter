@@ -3,12 +3,12 @@
 import 'dart:core';
 
 class Doctor {
-  int idDoctor;
-  String nombres;
-  String apellidos;
-  int edad,
-  String fechaNaci;
-  int idConsultorio;
+  int idDoctor = 0;
+  String nombres = '';
+  String apellidos = '';
+  int edad = 0;
+  String fechaNaci = '';
+  int idConsultorio = 0;
 
   Doctor.fromJson(dynamic json) {
     idDoctor = json['IdDoctor'];

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proyecto_topicos/view/agendar_citas.dart';
-import 'package:proyecto_topicos/view/consulta_citas.dart';
+
+import 'view/agendar_citas.dart';
+import 'view/consulta_citas.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
