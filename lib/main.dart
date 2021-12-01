@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto_topicos/view/Login.dart';
+import 'package:proyecto_topicos/view/registroPaciente.dart';
 
 import 'view/registrar_consultorio.dart';
 import 'view/registrar_rol.dart';
@@ -37,6 +39,8 @@ class MyApp extends StatelessWidget {
           '/modificar-consultorio': (BuildContext context) => ModificarConsultorio(),
           '/registrar-rol': (BuildContext context) => RegistrarRol(),
           '/modificar-rol': (BuildContext context) => ModificarRol(),
+          '/login': (BuildContext context) => Login(), 
+          '/registro-paciente': (BuildContext context) => registroPaciente(),
         });
   }
 }
@@ -62,12 +66,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/consulta-citas');
+                  Navigator.pushNamed(context, '/login');
                 },
                 child: const Text('Ingresar'))
+                
           ],
         ),
+        
       ),
+      
     );
   }
 }
