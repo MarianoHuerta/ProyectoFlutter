@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
           '/modificar-consultorio': (BuildContext context) => ModificarConsultorio(),
           '/registrar-rol': (BuildContext context) => RegistrarRol(),
           '/modificar-rol': (BuildContext context) => ModificarRol(),
-          '/login': (BuildContext context) => Login(), 
           '/registro-paciente': (BuildContext context) => registroPaciente(),
+          '/login': (BuildContext context) => Login(),
         });
   }
 }
