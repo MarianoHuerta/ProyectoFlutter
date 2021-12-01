@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 class PersonalTextField extends StatelessWidget {
+
+  final TextEditingController controller;
   final String texto;
   final String label;
   final IconData icono;
 
   const PersonalTextField(
+    this.controller,
     this.texto,
     this.label,
     {
@@ -16,6 +19,7 @@ class PersonalTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: this.controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),

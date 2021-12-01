@@ -12,11 +12,20 @@ class ModificarConsultorio extends StatefulWidget {
 
 class _ModificarConsultorioState extends State<ModificarConsultorio>{
 
+  TextEditingController numeroController = new TextEditingController();
+  int id = 37;
   String _numero = '';
   String _opcion = 'Volar';
 
   List<String> _doctores = ['Volar', 'Rayo X', 'Super Aliento', 'super Fuerza'];
-  TextEditingController _inputFieldDateController = new TextEditingController();
+
+  //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
+  //NombreFuncion(ID de la funcion):
+  onPressedConsultorio(id){
+    _numero = numeroController.text;
+    print('press modificar consultorio $_numero');
+    numeroController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +40,20 @@ class _ModificarConsultorioState extends State<ModificarConsultorio>{
           vertical: 20.0,
         ),
         children: [
-          PersonalTextField('Numero', 'Numero Consultorio', icono: Icons.meeting_room),
+          //[Controller, Texto, Label, icono]:
+          new PersonalTextField(numeroController, 'Numero', 'Numero Consultorio', icono: Icons.meeting_room),
           Divider(),
           _ListaDoctores(),
           Divider(),
           Divider(),
           Divider(),
           Divider(),
-          PersonalButton('Modificar', icono: Icons.update),
+          //[ID, Funcion, Texto, icono]:
+          //new PersonalButton(id, onPressedConsultorio, 'Registrar', icono: Icons.add),
+          //Divider(),
+          new PersonalButton(id, onPressedConsultorio, 'Modificar', icono: Icons.update),
+          //Divider(),
+          //PersonalButton(id, onPressedConsultorio, 'Eliminar', icono: Icons.delete),
         ],
       )
     );
@@ -68,7 +83,6 @@ class _ModificarConsultorioState extends State<ModificarConsultorio>{
                   color: Colors.teal, width: 2.0),
                 borderRadius: BorderRadius.circular(20.0)),
               child: DropdownButton<String>(
-                hint: Text('Doctores'),
                 dropdownColor: Colors.teal[300],
                 elevation: 5,
                 icon: Icon(Icons.keyboard_arrow_down),

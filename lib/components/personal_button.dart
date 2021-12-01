@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PersonalButton extends StatelessWidget {
+  
+  final int id;
+  final Function(int) onPressed;
   final String texto;
   final IconData icono;
 
   const PersonalButton(
+    this.id,
+    this.onPressed,
     this.texto,
     {
     Key? key,
@@ -17,6 +22,9 @@ class PersonalButton extends StatelessWidget {
       margin: EdgeInsets.only(left: 50.0, right: 50.0),
       height: 50.0,
       child: ElevatedButton.icon(
+        onPressed: (){
+          onPressed(this.id);
+        },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0)   
@@ -30,9 +38,6 @@ class PersonalButton extends StatelessWidget {
         ),
         label: Text(this.texto),
         icon: Icon(this.icono),
-        onPressed: (){
-          print('boton');
-        },
       ) 
     );
   }

@@ -34,10 +34,9 @@ class MyApp extends StatelessWidget {
           '/consulta-citas': (BuildContext context) => ConsultaCitasPage(),
           '/agendar-cita': (BuildContext context) => FormCitas(),
           '/registrar-consultorio': (BuildContext context) => RegistrarConsultorio(),
-          '/registrar-rol': (BuildContext context) => RegistrarRol(),
           '/modificar-consultorio': (BuildContext context) => ModificarConsultorio(),
+          '/registrar-rol': (BuildContext context) => RegistrarRol(),
           '/modificar-rol': (BuildContext context) => ModificarRol(),
-          
         });
   }
 }
