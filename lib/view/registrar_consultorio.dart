@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/util/constants.dart';
 import '/components/personal_textField.dart';
 import '/components/personal_button.dart';
 
@@ -13,7 +14,7 @@ class RegistrarConsultorio extends StatefulWidget {
 class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
   
   TextEditingController numeroController = new TextEditingController();
-  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
+  var url = Uri.parse('http://$IP_CONEXION/RegistrarConsultorio.php');
   int id = 36;
   
   //Función que inserta a la base de datos:
