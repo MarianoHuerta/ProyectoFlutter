@@ -1,88 +1,104 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/components/personal_button.dart';
-import '/components/personal_textField.dart';
 
 import 'package:http/http.dart' as http;
-import '/util/constants.dart' as Constants;
-class registroPaciente extends StatefulWidget {
-  registroPaciente({Key? key}) : super(key: key);
 
+import '/components/personal_button.dart';
+import '/components/personal_textField.dart';
+import '/model/consultorio.dart';
+import '/model/paciente.dart';
+
+import '/util/constants.dart' as Constants;
+
+class FormPaciente extends StatefulWidget {
   @override
-  _registroPacienteState createState() => _registroPacienteState();
+  _FormPacienteState createState() => _FormPacienteState();
 }
 
-class _registroPacienteState extends State<registroPaciente> {
-  TextEditingController nombre = new TextEditingController();
-  TextEditingController apellido = new TextEditingController();
-  TextEditingController usuario = new TextEditingController();
-  TextEditingController contrasenia = new TextEditingController();
-  TextEditingController _inputFieldDateController = new TextEditingController();
+class _FormPacienteState extends State<FormPaciente> {
+  DateTime fechaSeleccionada = DateTime.now();
+  Consultorio? consultorioSeleccionado;
 
-  String _nombre = '';
-  String _Apellido = '';
+  TextEditingController nombreController = TextEditingController();
+  TextEditingController apellidosController = TextEditingController();
+  TextEditingController edadController = TextEditingController();
+  TextEditingController fechaController = TextEditingController();
+
   String _fecha='';
   int _edad = 0;
-  String _usuario = '';
-  String _contrasenia = '';
-  int id = 1;
+
+  var urlPaciente = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/registrar_paciente.php');
 
 
   @override
   Widget build(BuildContext context) {
+    onPressedCancelar(id) {
+      Navigator.pop(context);
+    }
+
+    Widget build(BuildContext context) {
+  return Column(
+    children: <Widget>[
+              Container(
+                child: PersonalTextField(nombreController, 'Nombres', 'Nombres',
+                    icono: Icons.account_circle, maxLineas: 3, minLineas: 1),
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              ),
+              Container(
+                child: PersonalTextField(
+                    apellidosController, 'Apellidos', 'Apellidos',
+                    icono: Icons.list_alt),
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+                child: TextField(
+                  controller: fechaController,
+                  enableInteractiveSelection: false,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      labelText: 'Fecha de nacimiento',
+                      hintText: 'Fecha',
+                      prefixIcon: Icon(
+                        Icons.perm_contact_calendar,
+                        color: Colors.teal[600],
+                      )),
+                  onTap: () => _selectDate(context),
+                  readOnly: true,
+                ),
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  PersonalButton(1, onPressedGuardarPaciente, 'Siguiente',
+                      icono: Icons.add_sharp, classColor: 'primary'),
+                  PersonalButton(
+                    2,
+                    onPressedCancelar,
+                    'Cancelar',
+                    icono: Icons.cancel,
+                    classColor: 'secondary',                  
+            ),
+        ],
+      )
+    ],
+  );
+}
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar Paciente'),
-
+        title: Text("Registrar Paciente"),
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 20.0,
-
-        ),
-        children: [
-          new PersonalTextField(nombre, 'Nombre', 'Ingresar Nombre', icono: Icons.accessibility),
-          Divider(),
-          new PersonalTextField(apellido, 'Apellido', 'Ingresar Apellido', icono: Icons.accessibility),
-          Divider(),
-          _crearFecha(context),
-          Divider(),
-          new PersonalTextField(usuario, 'Usuario', 'Ingresar Usuario', icono: Icons.account_box,),
-          Divider(),
-          new PersonalTextField(contrasenia, 'Contraseña', 'Ingresar Contraseña', icono: Icons.lock_open ,obs: true),
-          Divider(),
-          new PersonalButton(id, onPressendRP, 'Registrar', icono: Icons.add),
-          Divider(),
-          new PersonalButton(id, onPressendSalir, 'Regresar', icono: Icons.arrow_back,)
-        ],
-      ),
-
+      body: build(context),
     );
   }
-
-
-  Widget _crearFecha(BuildContext context){
-    return TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Fecha de Nacimiento',
-        labelText: 'Fecha de Nacimeinto',
-        suffixIcon: Icon(Icons.calendar_today),
-      ),
-      controller: _inputFieldDateController,
-      enableInteractiveSelection: false,
-      onTap: (){
-        FocusScope.of(context).requestFocus(new FocusNode());
-        _selectDate(context);
-      },
-    );
-  }
-
-  _selectDate(BuildContext context) async {
+ _selectDate(BuildContext context) async {
     DateTime? picked= await showDatePicker(
       context: context, 
       initialDate: new DateTime.now(), 
@@ -97,140 +113,46 @@ class _registroPacienteState extends State<registroPaciente> {
         _edad = _edad + 1;
         
         _fecha = picked.toString();
-        _inputFieldDateController.text = _fecha;
+        fechaController.text = _fecha;
       });
     }
   }
 
-  onPressendSalir(id){
-    Navigator.pop(context);
+  onPressedGuardarPaciente(id) async {
+    Paciente cita = Paciente(
+        idPaciente: 0,
+        nombres: nombreController.text,
+        apellidos: apellidosController.text,
+        edad: _edad,
+        fechaNaci: fechaController.text);
+    await registrarPaciente(cita);
+    Navigator.pushNamed(context, '/registrar-user');
   }
 
-  onPressendRP(id){
-    setState(() {
-      if(nombre.text == "" || apellido.text == "" || _inputFieldDateController.text == "" || usuario.text == "" || contrasenia.text == ""){
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context){
-            return AlertDialog(
-              title: Text('Llene los campos'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: [Text('Es obligatorio que llene los campos')],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  }, child: Text('Aceptar'))
-              ],
-            );
-          });
-      }else{
-        registrar();
-        Navigator.pop(context);
-      }
-      
-    });
-  }
-  
-  Widget _registrarBoton(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.add_circle_outline
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Registrar'),
-      onPressed: (){
-        setState(() {
+  Future registrarPaciente(Paciente Paciente) async {
+    final response = await http.post(urlPaciente, body: Paciente.toJson());
+    print(response.body);
 
-          if(nombre.text == "" || apellido.text == "" || _inputFieldDateController.text == "" || usuario.text == "" || contrasenia.text == ""){
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context){
-                return AlertDialog(
-                  title: Text('Llene los campos'),
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: [Text('Es obligatorio que llene los campos')],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: (){
-                        Navigator.of(context).pop();
-                      }, child: Text('Aceptar'))
-                  ],
-                );
-              });
-          }else{
-            registrar();
-            Navigator.pop(context);
-          }
-          
-          nombre.text='';
-          apellido.text='';
-          _edad=0;
-        });
-      },
-      );
+    var message = json.decode(response.body.toString());
+    _mostrarMensaje('Se ha registrado con éxito',
+        'Ha habido un error vuelva a intentarlo', message['status']);
   }
 
+  _mostrarMensaje(String mensajeExito, String mensajeError, bool status) {
+    var colorMessage;
+    var textMessage;
 
-  Widget _salirBoton(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.arrow_back
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Regresar'),
-      onPressed: (){
-        
-      },
-      );
+    if (status) {
+      colorMessage = Colors.green[300];
+      textMessage = mensajeExito;
+    } else {
+      colorMessage = Colors.red[300];
+      textMessage = mensajeError;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(textMessage),
+      backgroundColor: colorMessage,
+    ));
   }
-
-  void registrar() {
-    print(nombre.text);
-    print(apellido.text);
-    print(_inputFieldDateController.text);
-    print(_edad);
-    print(usuario.text);
-    print(contrasenia.text);
-    var urlDoctor = Uri.parse(
-      'http://${Constants.IP_CONEXION}/proyecto_topicos/registrar_doctor.php');
-
-    http.post(urlDoctor, body: {
-      "Nombres": nombre.text,
-      "Apellidos": apellido.text,
-      "FechaNaci": _inputFieldDateController.text,
-      "Edad": _edad.toString(),
-      "Nombre": usuario.text,
-      "Contrasenia": contrasenia.text
-    });
-  }
-
 }

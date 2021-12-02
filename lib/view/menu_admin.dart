@@ -24,22 +24,25 @@ class _MenuAdminState extends State<MenuAdmin> {
         ),
 
         children: [
-          Text('Datos Personales:'),
-          new PersonalButton(id, onPressedModificarDatos, 'Modificar Datos', icono: Icons.manage_accounts),
-          Divider(),
+          
           Text('Agregar:'),
+          Divider(),
+          new PersonalButton(id, onPressedModificarDatos, 'Agregar Administrador', icono: Icons.manage_accounts),
+          Divider(),
           new PersonalButton(id, onPressedAgregarMedico, 'Agregar Medico', icono: Icons.person_add),
           Divider(),
-          new PersonalButton(id, onPressedAgregarRoles, 'Agregar Roles', icono: Icons.people),
+          new PersonalButton(id, onPressedAgregarRoles, 'Agregar Roles', icono: Icons.group_add),
           Divider(),
           new PersonalButton(id, onPressedAgregarConsultorio, 'Agregar Consultorio', icono: Icons.door_front_door_outlined),
           Divider(),
           Text('Modificar:'),
-          new PersonalButton(id, onPressedModificarRoles, 'Modificar Roles', icono: Icons.manage_accounts),
+          Divider(),
+          new PersonalButton(id, onPressedModificarRoles, 'Modificar Roles', icono: Icons.groups_sharp),
           Divider(),
           new PersonalButton(id, onPressedModificarConsultorio, 'Modificar Consultorio', icono: Icons.door_back_door_outlined),
           Divider(),
           Text('Cerrar Sesion:'),
+          Divider(),
           new PersonalButton(id, onPressedCerrarSesion, 'Cerrar Sesion', icono: Icons.logout,),
         ],
       ),
@@ -63,11 +66,11 @@ class _MenuAdminState extends State<MenuAdmin> {
   }
 
   onPressedModificarConsultorio(id){
-    Navigator.pushNamed(context, '/modificar-consultorio');
+    Navigator.pushNamed(context, '/consultar-consultorios');
   }
 
   onPressedModificarRoles(id){
-    Navigator.pushNamed(context, '/modificar-rol');
+    Navigator.pushNamed(context, '/consulta-roles');
   }
 
   onPressedCerrarSesion(id){

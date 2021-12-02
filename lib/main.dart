@@ -1,9 +1,12 @@
+import '/view/consulta_consultorios.dart';
 import '/view/menu_admin.dart';
 import '/view/menu_medico.dart';
 import '/view/menu_paciente.dart';
-import '/view/modificar_admin.dart';
+import '/view/registrar_admin.dart';
 import '/view/modificar_doctor.dart';
 import '/view/modificar_paciente.dart';
+import '/view/registrar_user.dart';
+import '/view/registrar_userd.dart';
 import '/view/registro_doctor.dart';
 import '/view/registro_paciente.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +20,7 @@ import 'view/modificar_consultorio.dart';
 import 'view/modificar_rol.dart';
 import 'view/agendar_citas.dart';
 import 'view/consulta_citas.dart';
+import 'view/consulta_roles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,12 +46,16 @@ class MyApp extends StatelessWidget {
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
         routes: <String, WidgetBuilder>{
           '/consulta-citas': (BuildContext context) => ConsultaCitasPage(),
+          '/consulta-roles': (BuildContext context) => ConsultaRolesPage(),
+          '/consultar-consultorios': (BuildContext context) => ConsultaConsultoriosPage(),
           '/agendar-cita': (BuildContext context) => FormCitas(),
-          '/registrar-consultorio': (BuildContext context) => RegistrarConsultorio(),
+          '/registrar-consultorio': (BuildContext context) => FormConsultorio(),
           '/modificar-consultorio': (BuildContext context) => ModificarConsultorio(),
-          '/registrar-rol': (BuildContext context) => RegistrarRol(),
+          '/registrar-rol': (BuildContext context) => FormRol(),
+          '/registrar-user': (BuildContext context) => RegistrarUser(),
+          '/registrar-userd': (BuildContext context) => RegistrarUserd(),
           '/modificar-rol': (BuildContext context) => ModificarRol(),
-          '/registrar-paciente': (BuildContext context) => registroPaciente(),
+          '/registrar-paciente': (BuildContext context) => FormPaciente(),
           '/modificar-paciente': (BuildContext context) => ModificarPaciente(),
           '/registrar-doctor': (BuildContext context) => FormDoctor(),
           '/modificar-doctor': (BuildContext context) => ModificarDoctor(),

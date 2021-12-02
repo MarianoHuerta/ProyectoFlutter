@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
 
   onPressedRegistrar(id){
     Navigator.push(context, 
-    MaterialPageRoute(builder: (context) => registroPaciente()));
+    MaterialPageRoute(builder: (context) => FormPaciente()));
   }
 
   var url = Uri.parse('http://${Constants.IP_CONEXION}/proyecto_topicos/login.php');

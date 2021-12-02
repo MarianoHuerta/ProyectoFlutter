@@ -23,10 +23,10 @@ class _FormDoctorState extends State<FormDoctor> {
 
   TextEditingController nombreController = TextEditingController();
   TextEditingController apellidosController = TextEditingController();
-  TextEditingController edadController = TextEditingController();
+  int edadController = 0;
   TextEditingController fechaController = TextEditingController();
   List<Consultorio> consultorios = [];
-
+String _fecha='';
   var urlConsultorio = Uri.parse(
       'http://${Constants.IP_CONEXION}/proyecto_topicos/consultar_consultorio.php');
 
@@ -112,23 +112,6 @@ class _FormDoctorState extends State<FormDoctor> {
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
                 child: TextField(
-                  controller: edadController,
-                  enableInteractiveSelection: false,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      labelText: 'Edad',
-                      hintText: 'Edad',
-                      prefixIcon: Icon(
-                        Icons.calendar_today,
-                        color: Colors.teal[600],
-                      )),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
-                child: TextField(
                   controller: fechaController,
                   enableInteractiveSelection: false,
                   decoration: InputDecoration(
@@ -149,7 +132,7 @@ class _FormDoctorState extends State<FormDoctor> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  PersonalButton(1, onPressedGuardarDoctor, 'Guardar',
+                  PersonalButton(1, onPressedGuardarDoctor, 'Siguiente',
                       icono: Icons.add_sharp, classColor: 'primary'),
                   PersonalButton(
                     2,
@@ -173,21 +156,21 @@ class _FormDoctorState extends State<FormDoctor> {
   }
 
   _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: fechaSeleccionada,
-        firstDate: DateTime(1960),
-        lastDate: DateTime(2035),
-        initialEntryMode: DatePickerEntryMode.input,
-        helpText: 'Selecciona una fecha',
-        cancelText: 'Cancelar',
-        confirmText: 'Seleccionar');
-
-    if (picked != null && picked != fechaSeleccionada) {
+    DateTime? picked= await showDatePicker(
+      context: context, 
+      initialDate: new DateTime.now(), 
+      firstDate: new DateTime(1960), 
+      lastDate: new DateTime.now()
+      );
+      
+    if(picked != null){
       setState(() {
-        fechaSeleccionada = picked;
-        fechaController.text =
-            fechaSeleccionada.toLocal().toString().split(' ')[0];
+        DateTime ano = DateTime.now();
+        edadController = ano.year - picked.year - 1;
+        edadController = edadController + 1;
+        
+        _fecha = picked.toString();
+        fechaController.text = _fecha;
       });
     }
   }
@@ -198,9 +181,10 @@ class _FormDoctorState extends State<FormDoctor> {
         nombres: nombreController.text,
         apellidos: apellidosController.text,
         idConsultorio: consultorioSeleccionado!.idConsultorio,
-        edad: int.parse(edadController.text),
+        edad: edadController,
         fechaNaci: fechaController.text);
     await registrarDoctor(cita);
+    Navigator.pushNamed(context, '/registrar-userd');
   }
 
   Future registrarDoctor(Doctor doctor) async {

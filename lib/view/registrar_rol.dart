@@ -1,85 +1,103 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '/components/personal_textField.dart';
+import 'package:http/http.dart' as http;
+
 import '/components/personal_button.dart';
+import '/components/personal_textField.dart';
+import '/model/rol.dart';
 
-class RegistrarRol extends StatefulWidget {
-  RegistrarRol({ Key? key }) : super(key: key);
+import '/util/constants.dart' as Constants;
 
+class FormRol extends StatefulWidget {
   @override
-  _RegistrarRolState createState() => _RegistrarRolState();
+  _FormRolState createState() => _FormRolState();
 }
 
-class _RegistrarRolState extends State<RegistrarRol>{
+class _FormRolState extends State<FormRol> {
 
-  TextEditingController nombreController = new TextEditingController();
-  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
-  int id = 31;
+  TextEditingController nombreController = TextEditingController();
 
-  //Función que inserta a la base de datos:
-  /*Future<void> sendData() async{
-    var res = await http.post(url.parse(url), body: {
-      "Nombre": nombreController.text,
-    });
-  }*/
+  var urlRol = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/RegistrarRol.php');
 
-  //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
-  //NombreFuncion(ID de la funcion):
-  onPressedRol(id){
-    //sendData();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Roles'),
-      ),
+    onPressedCancelar(id) {
+      Navigator.pop(context);
+    }
 
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 20.0,
-        ),
-        children: [
-          //[Controller, Texto, Label, icono]:
-          new PersonalTextField(nombreController, 'Nombre', 'Nombre Rol', icono: Icons.accessibility),
-          Divider(),
-          Divider(),
-          Divider(),
-          Divider(),
-          //[ID, Funcion, Texto, icono]:
-          new PersonalButton(id, onPressedRol, 'Registrar', icono: Icons.add),
-         Divider(),
-          //PersonalButton('Eliminar', icono: Icons.delete),
-          
-          _salirBoton(),
+    Widget build(BuildContext context) {
+  return Column(
+    children: <Widget>[
+              Container(
+                child: PersonalTextField(nombreController, 'Nombre', 'Nombre de Rol',
+                    icono: Icons.account_circle, maxLineas: 3, minLineas: 1),
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              ),
+              
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  PersonalButton(16, onPressedGuardarRol, 'Guardar',
+                      icono: Icons.add_sharp, classColor: 'primary'),
+                  PersonalButton(
+                    17,
+                    onPressedCancelar,
+                    'Cancelar',
+                    icono: Icons.cancel,
+                    classColor: 'secondary',                  
+            ),
         ],
       )
+    ],
+  );
+}
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Registrar Rol"),
+      ),
+      body: build(context),
     );
   }
-  
- Widget _salirBoton(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.arrow_back
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Regresar'),
-      onPressed: (){
-        Navigator.pop(context);
-      },
-      );
+ 
+
+  onPressedGuardarRol(id) async {
+    Rol cita = Rol(
+        idRol: 0,
+        nombre: nombreController.text);
+    await registrarRol(cita);
   }
 
+  Future registrarRol(Rol Rol) async {
+    final response = await http.post(urlRol, body: Rol.toJson());
+    print(response.body);
+
+    var message = json.decode(response.body.toString());
+    _mostrarMensaje('Se ha registrado con éxito',
+        'Ha habido un error vuelva a intentarlo', message['status']);
+  }
+
+  _mostrarMensaje(String mensajeExito, String mensajeError, bool status) {
+    var colorMessage;
+    var textMessage;
+
+    if (status) {
+      colorMessage = Colors.green[300];
+      textMessage = mensajeExito;
+    } else {
+      colorMessage = Colors.red[300];
+      textMessage = mensajeError;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(textMessage),
+      backgroundColor: colorMessage,
+    ));
+  }
 }

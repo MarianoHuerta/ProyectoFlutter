@@ -39,11 +39,11 @@ class _menuPacienteState extends State<menuPaciente> {
   }
 
   onPressedConsultarCita(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/consulta-citas');
   }
 
   onPressedModificarDatos(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/modificar-paciente');
   }
 
   onPressedCerrarSesion(id){

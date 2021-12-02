@@ -1,86 +1,113 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '/components/personal_textField.dart';
+import 'package:http/http.dart' as http;
+
 import '/components/personal_button.dart';
+import '/components/personal_textField.dart';
+import '/model/consultorio.dart';
+
+import '/util/constants.dart' as Constants;
 
 class ModificarConsultorio extends StatefulWidget {
-  ModificarConsultorio({ Key? key }) : super(key: key);
-
   @override
   _ModificarConsultorioState createState() => _ModificarConsultorioState();
 }
 
-class _ModificarConsultorioState extends State<ModificarConsultorio>{
+class _ModificarConsultorioState extends State<ModificarConsultorio> {
+  TextEditingController numeroController = TextEditingController();
 
-  TextEditingController numeroController = new TextEditingController();
-  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
-  int id = 37;
+  Consultorio? consultorioEditar;
+  bool isEditar = false;
 
-  //Función que inserta a la base de datos:
-  /*Future<void> sendData() async{
-    var res = await http.post(url.parse(url), body: {
-      "Nombre": nombreController.text,
-    });
-  }*/
-
-  //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
-  //NombreFuncion(ID de la funcion):
-  onPressedConsultorio(id){
-    
-    numeroController.clear();
-  }
+  var urlEditarConsultorios = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/editar_consultorio.php');
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Consultorios'),
-      ),
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
 
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 20.0,
-        ),
-        children: [
-          //[Controller, Texto, Label, icono]:
-          new PersonalTextField(numeroController, 'Numero', 'Numero Consultorio', icono: Icons.meeting_room),
-          Divider(),
-          Divider(),
-          Divider(),
-          Divider(),
-          //[ID, Funcion, Texto, icono]:
-          new PersonalButton(id, onPressedConsultorio, 'Modificar', icono: Icons.update),
-         Divider(),
-          //PersonalButton('Eliminar', icono: Icons.delete),
-          
-          _salirBoton(),
+    if (arg['action'] == 'editar' && !isEditar) {
+      setState(() {
+        consultorioEditar = arg['consultorio'];
+        numeroController.text = consultorioEditar!.numero.toString();
+        isEditar = true;
+      });
+    }
+
+    onPressedCancelar(id) {
+      Navigator.pop(context);
+    }
+    Widget build(BuildContext context) {
+  return Column(
+    children: <Widget>[
+              Container(
+                child: PersonalTextField(
+                    numeroController, 'Nombre', 'Nombre del Consultorio',
+                    icono: Icons.list_alt, maxLineas: 3, minLineas: 1),
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              ),
+              
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  PersonalButton(16, onPressedEditarConsultorio, 'Guardar',
+                      icono: Icons.add_sharp, classColor: 'primary'),
+                  PersonalButton(
+                    17,
+                    onPressedCancelar,
+                    'Cancelar',
+                    icono: Icons.cancel,
+                    classColor: 'secondary',                  
+            ),
         ],
       )
+    ],
+  );
+}
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("modificar Consultorio"),
+      ),
+      body: build(context),
     );
   }
-  
- Widget _salirBoton(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.arrow_back
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Regresar'),
-      onPressed: (){
-        Navigator.pop(context);
-      },
-      );
+ 
+
+  onPressedEditarConsultorio(id) async {
+    if (consultorioEditar != null) {
+      consultorioEditar!.numero = int.parse(numeroController.text);
+
+      await editarConsultorio(consultorioEditar!);
+    }
   }
 
+  Future editarConsultorio(Consultorio consultorio) async {
+    final response = await http.post(urlEditarConsultorios, body: consultorio.toJson());
+
+    var message = json.decode(response.body);
+    _mostrarMensaje('Se ha actualizado su Consultorio',
+        'Ha habido un error vuelva a intentarlo', message['status']);
+  }
+
+  _mostrarMensaje(String mensajeExito, String mensajeError, bool status) {
+    var colorMessage;
+    var textMessage;
+
+    if (status) {
+      colorMessage = Colors.green[300];
+      textMessage = mensajeExito;
+    } else {
+      colorMessage = Colors.red[300];
+      textMessage = mensajeError;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(textMessage),
+      backgroundColor: colorMessage,
+    ));
+  }
 }

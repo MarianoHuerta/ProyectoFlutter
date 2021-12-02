@@ -21,11 +21,15 @@ class _FormCitasState extends State<FormCitas> {
   DateTime fechaSeleccionada = DateTime.now();
   TimeOfDay horaSeleccionada = TimeOfDay.now();
   Paciente? pacienteSeleccionado;
+
   TextEditingController situacionController = TextEditingController();
   TextEditingController precioController = TextEditingController();
   TextEditingController fechaController = TextEditingController();
   TextEditingController horaController = TextEditingController();
   List<Paciente> pacientes = [];
+
+  Cita? citaEditar;
+  bool isEditar = false;
 
   var urlPacientes = Uri.parse(
       'http://${Constants.IP_CONEXION}/proyecto_topicos/consulta_pacientes.php');
@@ -47,24 +51,27 @@ class _FormCitasState extends State<FormCitas> {
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    Cita? citaEditar;
 
-    if (arg['action'] == 'editar') {
-      citaEditar = arg['cita'];
+    if (arg['action'] == 'editar' && !isEditar) {
+      setState(() {
+        citaEditar = arg['cita'];
+        fechaController.text = citaEditar!.fecha;
+        horaController.text = citaEditar!.hora;
+        situacionController.text = citaEditar!.situacion;
+        precioController.text = citaEditar!.precio.toString();
+        var fechaSeparada = citaEditar!.fecha.split('-');
+        var horaSeparada = citaEditar!.hora.split(':');
+        fechaSeleccionada = DateTime(int.parse(fechaSeparada[0]),
+            int.parse(fechaSeparada[1]), int.parse(fechaSeparada[2]));
+        horaSeleccionada = TimeOfDay(
+            hour: int.parse(horaSeparada[0]),
+            minute: int.parse(horaSeparada[1]));
+        isEditar = true;
+      });
     }
 
     onPressedCancelar(id) {
       Navigator.pop(context);
-    }
-
-    onPressedEditarCita(id) async {
-      if (citaEditar != null) {
-        citaEditar.fecha = fechaController.text;
-        citaEditar.hora = horaController.text;
-        citaEditar.situacion = situacionController.text;
-        citaEditar.precio = double.parse(precioController.text);
-        citaEditar.idPaciente = pacienteSeleccionado!.idPaciente;
-      }
     }
 
     Widget buildForm() => FutureBuilder<List<Paciente>>(
@@ -83,6 +90,10 @@ class _FormCitasState extends State<FormCitas> {
                 pacientes.add(element);
               }
             });
+          }
+          if (isEditar) {
+            pacienteSeleccionado = pacientes.firstWhere(
+                (element) => element.idPaciente == citaEditar!.idPaciente);
           }
           return ListView(
             children: [
@@ -172,7 +183,7 @@ class _FormCitasState extends State<FormCitas> {
                   (arg['action'] == 'agendar')
                       ? PersonalButton(1, onPressedRegistrarCita, 'Agendar',
                           icono: Icons.add_sharp, classColor: 'primary')
-                      : PersonalButton(2, onPressedRegistrarCita, 'Editar',
+                      : PersonalButton(2, onPressedEditarCita, 'Editar',
                           icono: Icons.edit, classColor: 'primary'),
                   PersonalButton(
                     3,
@@ -225,7 +236,7 @@ class _FormCitasState extends State<FormCitas> {
       setState(() {
         horaSeleccionada = newTime;
         horaController.text =
-            '${horaSeleccionada.hour}:${horaSeleccionada.minute}';
+            "${(horaSeleccionada.hour) < 10 ? '0${horaSeleccionada.hour}' : horaSeleccionada.hour}:${(horaSeleccionada.minute) < 10 ? '0${horaSeleccionada.minute}' : horaSeleccionada.minute}";
       });
     }
   }
@@ -240,6 +251,18 @@ class _FormCitasState extends State<FormCitas> {
         pacienteSeleccionado!.idPaciente,
         2);
     await registrarCita(cita);
+  }
+
+  onPressedEditarCita(id) async {
+    if (citaEditar != null) {
+      citaEditar!.fecha = fechaController.text;
+      citaEditar!.hora = horaController.text;
+      citaEditar!.situacion = situacionController.text;
+      citaEditar!.precio = double.parse(precioController.text);
+      citaEditar!.idPaciente = pacienteSeleccionado!.idPaciente;
+
+      await editarCita(citaEditar!);
+    }
   }
 
   Future registrarCita(Cita cita) async {
