@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mi_micha/view/Login.dart';
-import 'package:mi_micha/view/registroPaciente.dart';
+import '/view/Login.dart';
+import '/view/registroPaciente.dart';
 
 import 'view/registrar_consultorio.dart';
 import 'view/registrar_rol.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mi_micha/view/registroPaciente.dart';
+import '/view/registroPaciente.dart';
 
 import 'menuPaciente.dart';
 
