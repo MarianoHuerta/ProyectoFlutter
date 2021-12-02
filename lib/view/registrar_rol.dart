@@ -12,17 +12,24 @@ class RegistrarRol extends StatefulWidget {
 
 class _RegistrarRolState extends State<RegistrarRol>{
 
-  TextEditingController numeroController = new TextEditingController();
+  //var url = Uri.parse();
+  TextEditingController nombreController = new TextEditingController();
   int id = 31;
-  String _nombre = '';
+  //String _nombre = '';
 
   //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
   //NombreFuncion(ID de la funcion):
   onPressedRol(id){
-    _nombre = numeroController.text;
-    //print('press $_numero');
-    numeroController.clear();
+    //_nombre = nombreController.text;
+    //print('press $nombreController.text');
+    nombreController.clear();
   }
+
+  /*Future<List> registrarConsultorio(BuildContext context){
+    final response = await http.post(url, body:{
+      "Nombre": nombreController.text,
+    });
+  }*/
     
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,7 @@ class _RegistrarRolState extends State<RegistrarRol>{
         ),
         children: [
           //[Controller, Texto, Label, icono]:
-          new PersonalTextField(numeroController, 'Nombre', 'Nombre Rol', icono: Icons.accessibility),
+          new PersonalTextField(nombreController, 'Nombre', 'Nombre Rol', icono: Icons.accessibility),
           Divider(),
           Divider(),
           Divider(),
