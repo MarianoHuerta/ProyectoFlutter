@@ -12,7 +12,7 @@ class RegistrarRol extends StatefulWidget {
 
 class _RegistrarRolState extends State<RegistrarRol>{
 
-  //var url = Uri.parse();
+  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
   TextEditingController nombreController = new TextEditingController();
   int id = 31;
   //String _nombre = '';
@@ -25,11 +25,15 @@ class _RegistrarRolState extends State<RegistrarRol>{
     nombreController.clear();
   }
 
-  /*Future<List> registrarConsultorio(BuildContext context){
-    final response = await http.post(url, body:{
+  /*Future<void> sendData() async{
+    var res = await http.post(url.parse(url), body: {
       "Nombre": nombreController.text,
     });
   }*/
+  
+
+
+  
     
   @override
   Widget build(BuildContext context) {
