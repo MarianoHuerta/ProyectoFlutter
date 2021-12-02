@@ -9,5 +9,6 @@
         $resultado[] = $row;
     }
 
+    $connect->close();
     echo json_encode($resultado);
 ?>

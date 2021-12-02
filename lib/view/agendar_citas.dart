@@ -27,11 +27,14 @@ class _FormCitasState extends State<FormCitas> {
   TextEditingController horaController = TextEditingController();
   List<Paciente> pacientes = [];
 
-  var url = Uri.parse(
+  var urlPacientes = Uri.parse(
       'http://${Constants.IP_CONEXION}/proyecto_topicos/consulta_pacientes.php');
 
+  var urlCitas = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/registrar_cita.php');
+
   Future<List<Paciente>> consultaPacientes() async {
-    final response = await http.get(url);
+    final response = await http.get(urlPacientes);
 
     return (jsonDecode(response.body) as List)
         .map((value) => Paciente.fromJson(value))
@@ -55,7 +58,14 @@ class _FormCitasState extends State<FormCitas> {
           if (snapshot.hasError) {
             return const Center(child: Text('Error al cargar los pacientes'));
           }
-          pacientes = snapshot.data ?? [];
+          if (snapshot.data!.isNotEmpty) {
+            snapshot.data!.forEach((element) {
+              if (!pacientes.any(
+                  (paciente) => paciente.idPaciente == element.idPaciente)) {
+                pacientes.add(element);
+              }
+            });
+          }
           return ListView(
             children: [
               Container(
@@ -197,21 +207,41 @@ class _FormCitasState extends State<FormCitas> {
       setState(() {
         horaSeleccionada = newTime;
         horaController.text =
-            'Hora: ${horaSeleccionada.hourOfPeriod}:${horaSeleccionada.minute} ${horaSeleccionada.period.index == 0 ? 'am' : 'pm'}';
+            '${horaSeleccionada.hour}:${horaSeleccionada.minute}';
       });
     }
   }
 
-  onPressedRegistrarCita(id) {
+  onPressedRegistrarCita(id) async {
     Cita cita = Cita(
         0,
-        fechaSeleccionada,
-        horaSeleccionada,
+        fechaController.text,
+        horaController.text,
         situacionController.text,
         double.parse(precioController.text),
-        (pacienteSeleccionado == null) ? 0 : pacienteSeleccionado!.idPaciente,
-        0);
+        pacienteSeleccionado!.idPaciente,
+        2);
+    await registrarCita(cita);
   }
 
-  registrarCita(Cita cita) {}
+  Future registrarCita(Cita cita) async {
+    final response = await http.post(urlCitas, body: cita.toJson());
+
+    var message = json.decode(response.body);
+    var colorMessage;
+    var textMessage;
+
+    if (message['status']) {
+      colorMessage = Colors.green[300];
+      textMessage = 'Su cita ha sido registrada';
+    } else {
+      colorMessage = Colors.red[300];
+      textMessage = 'Ha habido un error, intente de nuevo';
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(textMessage),
+      backgroundColor: colorMessage,
+    ));
+  }
 }

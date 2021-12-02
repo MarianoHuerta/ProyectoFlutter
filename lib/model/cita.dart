@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class Cita {
   int idCita = 0;
-  DateTime fecha = DateTime.now();
-  TimeOfDay hora = TimeOfDay.now();
+  String fecha = DateTime.now().toString();
+  String hora = TimeOfDay.now().toString();
   String situacion = '';
   double precio = 0;
   int idPaciente = 0;
@@ -26,13 +26,13 @@ class Cita {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map['IdCita'] = idCita;
+    map['IdCita'] = idCita.toString();
     map['Fecha'] = fecha;
     map['Hora'] = hora;
     map['Situacion'] = situacion;
-    map['Precio'] = precio;
-    map['IdPaciente'] = idPaciente;
-    map['IdDoctor'] = idDoctor;
+    map['Precio'] = precio.toString();
+    map['IdPaciente'] = idPaciente.toString();
+    map['IdDoctor'] = idDoctor.toString();
     return map;
   }
 }
