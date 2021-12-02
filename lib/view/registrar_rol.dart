@@ -14,13 +14,13 @@ class _RegistrarRolState extends State<RegistrarRol>{
 
   TextEditingController numeroController = new TextEditingController();
   int id = 31;
-  String _numero = '';
+  String _nombre = '';
 
   //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
   //NombreFuncion(ID de la funcion):
   onPressedRol(id){
-    _numero = numeroController.text;
-    print('press $_numero');
+    _nombre = numeroController.text;
+    //print('press $_numero');
     numeroController.clear();
   }
     
