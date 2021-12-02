@@ -6,6 +6,7 @@ class PersonalTextField extends StatelessWidget {
   final String texto;
   final String label;
   final IconData icono;
+  final bool obs;
 
   const PersonalTextField(
     this.controller,
@@ -13,13 +14,15 @@ class PersonalTextField extends StatelessWidget {
     this.label,
     {
     Key? key,
-    this.icono = Icons.accessibility
+    this.icono = Icons.accessibility,
+    this.obs = false
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: this.controller,
+      obscureText: this.obs,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),

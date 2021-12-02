@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:proyecto_topicos/components/personal_button.dart';
+import 'package:proyecto_topicos/components/personal_textField.dart';
 
 class registroPaciente extends StatefulWidget {
   registroPaciente({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class _registroPacienteState extends State<registroPaciente> {
   int _edad = 0;
   String _usuario = '';
   String _contrasenia = '';
+  int id = 1;
 
 
   @override
@@ -38,15 +41,18 @@ class _registroPacienteState extends State<registroPaciente> {
 
         ),
         children: [
-          _crearNombre(),
+          new PersonalTextField(nombre, 'Nombre', 'Ingresar Nombre', icono: Icons.accessibility),
           Divider(),
-          _crearApellido(),
+          new PersonalTextField(apellido, 'Apellido', 'Ingresar Apellido', icono: Icons.accessibility),
           Divider(),
           _crearFecha(context),
           Divider(),
-          _crearUsuario(),
+          new PersonalTextField(usuario, 'Usuario', 'Ingresar Usuario'),
           Divider(),
+          new PersonalTextField(usuario, 'Usuario', 'Ingresar Usuario',obs: true),
           _crearContrasena(),
+          Divider(),
+          new PersonalButton(id, onPressendRP, 'Registrar', icono: Icons.add),
           Divider(),
           _registrarBoton(),
           Divider(),
@@ -151,6 +157,39 @@ class _registroPacienteState extends State<registroPaciente> {
         suffixIcon: Icon(Icons.lock_open),
       ),
     );
+  }
+
+  onPressendRP(id){
+    setState(() {
+      if(nombre.text == "" || apellido.text == "" || _inputFieldDateController.text == "" || usuario.text == "" || contrasenia.text == ""){
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context){
+            return AlertDialog(
+              title: Text('Llene los campos'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: [Text('Es obligatorio que llene los campos')],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: (){
+                    Navigator.of(context).pop();
+                  }, child: Text('Aceptar'))
+              ],
+            );
+          });
+      }else{
+        registrar();
+        Navigator.pop(context);
+      }
+      
+      nombre.text='';
+      apellido.text='';
+      _edad=0;
+    });
   }
   
   Widget _registrarBoton(){
