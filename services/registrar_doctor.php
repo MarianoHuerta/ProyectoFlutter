@@ -1,20 +1,25 @@
 <?php
+try {
     include 'conexion.php';
 
-    $idDoctor = $_POST['idDoctor'];
-    $nombres = $_POST['nombres'];
-    $apellidos = $_POST['apellidos'];
-    $edad = $_POST['edad'];
-    $fechaNaci = $_POST['fechaNaci'];
-    $idConsultorio = $_POST['idConsultorio'];
+    $idDoctor = $_POST['IdDoctor'];
+    $nombres = $_POST['Nombres'];
+    $apellidos = $_POST['Apellidos'];
+    $edad = $_POST['Edad'];
+    $fechaNaci = $_POST['FechaNaci'];
+    $idConsultorio = $_POST['IdConsultorio'];
 
-    $stmt = $connect->prepare('INSERT INTO Doctor (nombres, apellidos, edad, fechaNaci, idConsultorio)
-    VALUES (?, ?, ?, ?, ?, ?)');
+    $stmt = $connect->prepare("INSERT INTO doctores (Nombres, Apellidos, Edad, FechaNaci, IdConsultorio) VALUES (?, ?, ?, ?, ?)");
 
-    $stmt->bind_param("sssdii", $nombres, $apellidos, $edad, $fechaNaci, $idConsultorio);
-    $stmt->execute()();
+    $stmt->bind_param("ssisi", $nombres, $apellidos, $edad, $fechaNaci, $idConsultorio);
+    $stmt->execute();
 
     $stmt->close();
+    $connect->close();
 
-    echo json_decode('{msg: Doctor registrada}');
+    echo json_encode(array("status" => true, "message" => "Doctor registrado"));
+} catch (Exception $e) {
+    echo json_encode(array("status" => false, "message" => "Error insertando: " . $e->getMessage()));
+}
+    
 ?>

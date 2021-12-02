@@ -1,6 +1,6 @@
 <?php
 
-$connect = new mysqli("localhost","vane","vane","dbtopicos");
+$connect = new mysqli("localhost","root","","dbtopicos");
 
 if($connect->connect_error){
 	echo "Fallo, revise ip o firewall";
