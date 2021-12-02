@@ -17,22 +17,22 @@ class Doctor {
       this.idConsultorio = 0});
 
   Doctor.fromJson(dynamic json) {
-    idDoctor = json['IdDoctor'];
+    idDoctor = int.parse(json['IdDoctor']);
     nombres = json['Nombres'];
     apellidos = json['Apellidos'];
-    edad = json['Edad'];
+    edad = int.parse(json['Edad']);
     fechaNaci = json['FechaNaci'];
-    idConsultorio = json['IdConsultorio'];
+    idConsultorio = int.parse(json['IdConsultorio']);
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map['IdDoctor'] = idDoctor;
+    map['IdDoctor'] = idDoctor.toString();
     map['Nombres'] = nombres;
     map['Apellidos'] = apellidos;
-    map['Edad'] = edad;
+    map['Edad'] = edad.toString();
     map['FechaNaci'] = fechaNaci;
-    map['IdConsultorio'] = idConsultorio;
+    map['IdConsultorio'] = idConsultorio.toString();
     return map;
   }
 }

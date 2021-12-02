@@ -33,6 +33,9 @@ class _FormCitasState extends State<FormCitas> {
   var urlCitas = Uri.parse(
       'http://${Constants.IP_CONEXION}/proyecto_topicos/registrar_cita.php');
 
+  var urlEditarCitas = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/editar_cita.php');
+
   Future<List<Paciente>> consultaPacientes() async {
     final response = await http.get(urlPacientes);
 
@@ -44,9 +47,24 @@ class _FormCitasState extends State<FormCitas> {
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    Cita? citaEditar;
+
+    if (arg['action'] == 'editar') {
+      citaEditar = arg['cita'];
+    }
 
     onPressedCancelar(id) {
       Navigator.pop(context);
+    }
+
+    onPressedEditarCita(id) async {
+      if (citaEditar != null) {
+        citaEditar.fecha = fechaController.text;
+        citaEditar.hora = horaController.text;
+        citaEditar.situacion = situacionController.text;
+        citaEditar.precio = double.parse(precioController.text);
+        citaEditar.idPaciente = pacienteSeleccionado!.idPaciente;
+      }
     }
 
     Widget buildForm() => FutureBuilder<List<Paciente>>(
@@ -228,15 +246,28 @@ class _FormCitasState extends State<FormCitas> {
     final response = await http.post(urlCitas, body: cita.toJson());
 
     var message = json.decode(response.body);
+    _mostrarMensaje('Se ha registrado su cita',
+        'Ha habido un error vuelva a intentarlo', message['status']);
+  }
+
+  Future editarCita(Cita cita) async {
+    final response = await http.post(urlEditarCitas, body: cita.toJson());
+
+    var message = json.decode(response.body);
+    _mostrarMensaje('Se ha actualizado su cita',
+        'Ha habido un error vuelva a intentarlo', message['status']);
+  }
+
+  _mostrarMensaje(String mensajeExito, String mensajeError, bool status) {
     var colorMessage;
     var textMessage;
 
-    if (message['status']) {
+    if (status) {
       colorMessage = Colors.green[300];
-      textMessage = 'Su cita ha sido registrada';
+      textMessage = mensajeExito;
     } else {
       colorMessage = Colors.red[300];
-      textMessage = 'Ha habido un error, intente de nuevo';
+      textMessage = mensajeError;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

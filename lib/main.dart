@@ -1,3 +1,6 @@
+import '/view/menu_admin.dart';
+import '/view/menu_medico.dart';
+import '/view/menu_paciente.dart';
 import '/view/modificar_admin.dart';
 import '/view/modificar_doctor.dart';
 import '/view/modificar_paciente.dart';
@@ -46,10 +49,13 @@ class MyApp extends StatelessWidget {
           '/modificar-rol': (BuildContext context) => ModificarRol(),
           '/registrar-paciente': (BuildContext context) => registroPaciente(),
           '/modificar-paciente': (BuildContext context) => ModificarPaciente(),
-          '/registrar-doctor': (BuildContext context) => registroDoctor(),
+          '/registrar-doctor': (BuildContext context) => FormDoctor(),
           '/modificar-doctor': (BuildContext context) => ModificarDoctor(),
           '/modificar-admin': (BuildContext context) => ModificarAdmin(),
           '/login': (BuildContext context) => Login(),
+          '/menu-admin': (BuildContext context) => MenuAdmin(),
+          '/menu-paciente': (BuildContext context) => menuPaciente(),
+          '/menu-doctor': (BuildContext context) => menuMedico(),
         });
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '/components/personal_button.dart';
 import '/components/personal_textField.dart';
 
+import 'package:http/http.dart' as http;
+import '/util/constants.dart' as Constants;
 class registroPaciente extends StatefulWidget {
   registroPaciente({Key? key}) : super(key: key);
 
@@ -131,9 +133,6 @@ class _registroPacienteState extends State<registroPaciente> {
         Navigator.pop(context);
       }
       
-      nombre.text='';
-      apellido.text='';
-      _edad=0;
     });
   }
   
@@ -221,16 +220,17 @@ class _registroPacienteState extends State<registroPaciente> {
     print(_edad);
     print(usuario.text);
     print(contrasenia.text);
-    /*var url = "http://ip/NameDB/RegistrarPaciente.php";
+    var urlDoctor = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/registrar_doctor.php');
 
-    http.post(url, body: {
+    http.post(urlDoctor, body: {
       "Nombres": nombre.text,
       "Apellidos": apellido.text,
       "FechaNaci": _inputFieldDateController.text,
-      "Edad": _edad,
+      "Edad": _edad.toString(),
       "Nombre": usuario.text,
       "Contrasenia": contrasenia.text
-    });*/
+    });
   }
 
 }

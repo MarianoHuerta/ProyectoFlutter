@@ -1,10 +1,17 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'package:http/http.dart' as http;
+
 import '/components/card_cita.dart';
 import '/components/refresh_widget.dart';
+import '/model/cita.dart';
+
+import '/util/constants.dart' as Constants;
 
 class ConsultaCitasPage extends StatefulWidget {
   @override
@@ -13,7 +20,7 @@ class ConsultaCitasPage extends StatefulWidget {
 
 class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
-  List<int> data = [];
+  List<Cita> data = [];
 
   @override
   void initState() {
@@ -22,12 +29,24 @@ class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
     loadList();
   }
 
+  Future<List<Cita>> getCitas() async {
+    var url = Uri.parse(
+        'http://${Constants.IP_CONEXION}/proyecto_topicos/consulta_citas.php');
+
+    final response = await http.get(url);
+
+    print(response.body);
+
+    return (jsonDecode(response.body) as List)
+        .map((value) => Cita.fromJsonWithPaciente(value))
+        .toList();
+  }
+
   Future loadList() async {
     keyRefresh.currentState?.show();
-    await Future.delayed(Duration(milliseconds: 4000));
 
     final random = Random();
-    final data = List.generate(100, (_) => random.nextInt(100));
+    final data = await getCitas();
 
     setState(() => this.data = data);
   }
@@ -47,7 +66,8 @@ class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
         body: buildList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/agendar-cita');
+            Navigator.pushNamed(context, '/agendar-cita',
+                arguments: {'action': 'agendar'});
           },
           tooltip: 'Increment',
           child: const Icon(Icons.add),
@@ -65,21 +85,20 @@ class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
             padding: EdgeInsets.symmetric(vertical: 10),
             itemCount: data.length,
             itemBuilder: (context, index) {
-              final number = data[index];
-              return buildItem(number, index);
+              final cita = data[index];
+              return buildItem(cita, index);
             },
           ),
         );
 
-  Widget buildItem(int number, int index) => Dismissible(
-      key: Key(number.toString()),
+  Widget buildItem(Cita cita, int index) => Dismissible(
+      key: Key(cita.idCita.toString()),
       onDismissed: (direction) {
         setState(() {
           data.removeAt(index);
         });
-
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Número $number eliminado')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('La cita ${cita.idCita} se ha eliminado')));
       },
       background: Container(
         width: MediaQuery.of(context).size.width,
@@ -92,7 +111,5 @@ class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
           ],
         ),
       ),
-      child: CardCita(
-        number: number,
-      ));
+      child: CardCita(cita: cita, paciente: cita.paciente!));
 }

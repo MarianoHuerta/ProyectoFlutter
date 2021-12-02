@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '/view/menu_medico.dart';
 import 'package:flutter/material.dart';
 import '/components/personal_button.dart';
 import '/components/personal_textField.dart';
@@ -7,9 +8,9 @@ import '/view/menu_admin.dart';
 import '/view/menu_paciente.dart';
 import '/view/registro_paciente.dart';
 
+import '/util/constants.dart' as Constants;
 
-
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -82,9 +83,11 @@ class _LoginState extends State<Login> {
           );
         });
     }else{
-      Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => MenuAdmin()));
-      //login(context);
+      //Navigator.push(context, 
+      //MaterialPageRoute(builder: (context) => menuMedico()));
+      print(Usuario.text);
+      print(Contrasenia.text);
+      login(context);
     }
   }
 
@@ -93,91 +96,13 @@ class _LoginState extends State<Login> {
     MaterialPageRoute(builder: (context) => registroPaciente()));
   }
 
+  var url = Uri.parse('http://${Constants.IP_CONEXION}/proyecto_topicos/login.php');
 
-
-  Widget _botonLogin(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.login_outlined
-      ),
-      label: Text('Entrar'),
-      onPressed: (){
-        setState(() {
-          _nombre= Usuario.text;
-          _password = Contrasenia.text;
-
-          if(_nombre == "" || _password == ""){
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context){
-                return AlertDialog(
-                  title: Text('Llene los campos'),
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: [Text('Es obligatorio que llene los campos')],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: (){
-                        Navigator.of(context).pop();
-                      }, child: Text('Aceptar'))
-                  ],
-                );
-              });
-          }else{
-            Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => menuPaciente()));
-            //login(context);
-          }
-        });
-      },
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      );
-  }
-
-
-  Widget _botonRegistrar(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.person_add
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Registrar'),
-      onPressed: (){
-        Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => registroPaciente()));
-      }, 
-      );
-  }
-
-  var url = Uri.parse('http://192.168.1.14/tienda/login.php');
-
-  /*Future<List> login(BuildContext context) async {
+  Future<List> login(BuildContext context) async {
+    
     final response = await http.post(url, body: {
-      "Nombre": controllerNombre.text,
-      "Contrasenia": controllerPass.text,
+      "Nombre": Usuario.text,
+      "Contrasenia": Contrasenia.text,
     });
 
     var datauser = json.decode(response.body);
@@ -187,14 +112,18 @@ class _LoginState extends State<Login> {
         mensaje = "Login Fail";
       });
     } else {
-      if (datauser[0]['IdRol'] == 'admin') {
+      if (datauser[0]['IdRol'] == '1') {
         /////////////////////////////////////////ADMIN/////////////////////////////////////
-        Navigator.pushNamed(context, '/menuAdmin');
+        Navigator.pushNamed(context, '/menu-admin');
         FocusScope.of(context).unfocus();
         //print('datos correctos');
-      } else if (datauser[0]['IdRol'] == 'paciente') {
+      } else if (datauser[0]['IdRol'] == '2') {
         /////////////////////////////////////////PACIENTE///////////////////////////////////
-        Navigator.of(context).pushNamed('/menuPaciente');
+        Navigator.of(context).pushNamed('/menu-doctor');
+        FocusScope.of(context).unfocus();
+      }else if (datauser[0]['IdRol'] == '3') {
+        /////////////////////////////////////////PACIENTE///////////////////////////////////
+        Navigator.of(context).pushNamed('/menu-paciente');
         FocusScope.of(context).unfocus();
       }
       setState(() {
@@ -203,5 +132,5 @@ class _LoginState extends State<Login> {
     }
 
     return datauser;
-  }*/
+  }
 }

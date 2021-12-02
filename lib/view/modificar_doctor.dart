@@ -49,7 +49,7 @@ class _ModificarDoctorState extends State<ModificarDoctor>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar Doctor'),
+        title: Text('Modificar Doctor'),
 
       ),
       body: ListView(

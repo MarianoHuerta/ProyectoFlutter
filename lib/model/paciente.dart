@@ -9,6 +9,13 @@ class Paciente {
   int edad = 0;
   String fechaNaci = '';
 
+  Paciente(
+      {this.idPaciente = 0,
+      this.nombres = '',
+      this.apellidos = '',
+      this.edad = 0,
+      this.fechaNaci = ''});
+
   Paciente.fromJson(dynamic json) {
     idPaciente = int.parse(json['IdPaciente']);
     nombres = json['Nombres'];
@@ -19,10 +26,10 @@ class Paciente {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map['IdPaciente'] = idPaciente;
+    map['IdPaciente'] = idPaciente.toString();
     map['Nombres'] = nombres;
     map['Apellidos'] = apellidos;
-    map['Edad'] = edad;
+    map['Edad'] = edad.toString();
     map['FechaNaci'] = fechaNaci;
     return map;
   }

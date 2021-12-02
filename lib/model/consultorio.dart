@@ -5,17 +5,17 @@ class Consultorio {
   int numero = 0;
   int idDoctor = 0;
 
+  Consultorio();
+
   Consultorio.fromJson(dynamic json) {
-    idConsultorio = json['IdDoctor'];
-    numero = json['Numero'];
-    idDoctor = json['IdDoctor'];
+    idConsultorio = int.parse(json['IdConsultorio']);
+    numero = int.parse(json['Numero']);
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['IdConsultorio'] = idConsultorio;
     map['Numero'] = numero;
-    map['IdDoctor'] = idDoctor;
     return map;
   }
 }

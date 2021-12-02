@@ -1,196 +1,232 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 
 import '/components/personal_button.dart';
 import '/components/personal_textField.dart';
+import '/model/consultorio.dart';
+import '/model/doctor.dart';
 
-class registroDoctor extends StatefulWidget {
-  registroDoctor({Key? key}) : super(key: key);
+import '/util/constants.dart' as Constants;
 
+class FormDoctor extends StatefulWidget {
   @override
-  _registroDoctorState createState() => _registroDoctorState();
+  _FormDoctorState createState() => _FormDoctorState();
 }
 
-class _registroDoctorState extends State<registroDoctor> {
-  final nombre = TextEditingController();
-  final apellido = TextEditingController();
+class _FormDoctorState extends State<FormDoctor> {
+  DateTime fechaSeleccionada = DateTime.now();
+  Consultorio? consultorioSeleccionado;
 
-  String _nombre = '';
-  String _apellido = '';
-  String _usuario = '';
-  String _contrasenia = '';
-  String _fecha='';
-  int _edad = 0;
-  String _opcion = 'Volar';
+  TextEditingController nombreController = TextEditingController();
+  TextEditingController apellidosController = TextEditingController();
+  TextEditingController edadController = TextEditingController();
+  TextEditingController fechaController = TextEditingController();
+  List<Consultorio> consultorios = [];
 
-  List<String> _consultorios = ['Volar', 'Rayo X', 'Super Aliento', 'super Fuerza'];
+  var urlConsultorio = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/consultar_consultorio.php');
 
-  TextEditingController Nombre = new TextEditingController();
-  TextEditingController Apellidos = new TextEditingController();
-  TextEditingController Edad = new TextEditingController();
-  TextEditingController Usuario = new TextEditingController();
-  TextEditingController Contrasenia = new TextEditingController();
+  var urlDoctor = Uri.parse(
+      'http://${Constants.IP_CONEXION}/proyecto_topicos/registrar_doctor.php');
 
-  int id = 11;
-  TextEditingController _inputFieldDateController = new TextEditingController();
- onPressedDoctor(id){
-    _nombre = Nombre.text;
-    _apellido = Apellidos.text;
-    _fecha = _inputFieldDateController.text;
-    _usuario = Usuario.text;
-    _contrasenia = Contrasenia.text;
-    print('press $_nombre $_apellido $_fecha $_edad $_usuario $_contrasenia $_opcion');
-    Nombre.clear();
-    Apellidos.clear();
-    Edad.clear();
-    Usuario.clear();
-    Contrasenia.clear();
-    _inputFieldDateController.clear();
-    
+  Future<List<Consultorio>> consultaPacientes() async {
+    final response = await http.get(urlConsultorio);
+    print(response.body);
+
+    return (jsonDecode(response.body) as List)
+        .map((value) => Consultorio.fromJson(value))
+        .toList();
   }
+
   @override
   Widget build(BuildContext context) {
+    onPressedCancelar(id) {
+      Navigator.pop(context);
+    }
+
+    Widget buildForm() => FutureBuilder<List<Consultorio>>(
+        future: consultaPacientes(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Center(
+                child: Text('Error al cargar los consultorios'));
+          }
+          if (snapshot.data!.isNotEmpty) {
+            snapshot.data!.forEach((element) {
+              if (!consultorios.any((consultorio) =>
+                  consultorio.idConsultorio == element.idConsultorio)) {
+                consultorios.add(element);
+              }
+            });
+          }
+          return ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 15, 10, 5),
+                child: DropdownButtonFormField<Consultorio>(
+                  value: consultorioSeleccionado,
+                  isExpanded: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    hintText: 'Seleccione un consultorio',
+                    labelText: 'Seleccione un consultorio',
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Colors.teal[400],
+                    ),
+                  ),
+                  items: consultorios
+                      .map<DropdownMenuItem<Consultorio>>((Consultorio value) {
+                    return DropdownMenuItem<Consultorio>(
+                      child: Text('${value.numero}'),
+                      value: value,
+                    );
+                  }).toList(),
+                  onChanged: (Consultorio? value) {
+                    setState(() {
+                      consultorioSeleccionado = value;
+                    });
+                  },
+                ),
+              ),
+              Container(
+                child: PersonalTextField(nombreController, 'Nombres', 'Nombres',
+                    icono: Icons.account_circle, maxLineas: 3, minLineas: 1),
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              ),
+              Container(
+                child: PersonalTextField(
+                    apellidosController, 'Apellidos', 'Apellidos',
+                    icono: Icons.list_alt),
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+                child: TextField(
+                  controller: edadController,
+                  enableInteractiveSelection: false,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      labelText: 'Edad',
+                      hintText: 'Edad',
+                      prefixIcon: Icon(
+                        Icons.calendar_today,
+                        color: Colors.teal[600],
+                      )),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+                child: TextField(
+                  controller: fechaController,
+                  enableInteractiveSelection: false,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      labelText: 'Fecha de nacimiento',
+                      hintText: 'Fecha',
+                      prefixIcon: Icon(
+                        Icons.perm_contact_calendar,
+                        color: Colors.teal[600],
+                      )),
+                  onTap: () => _selectDate(context),
+                  readOnly: true,
+                ),
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  PersonalButton(1, onPressedGuardarDoctor, 'Guardar',
+                      icono: Icons.add_sharp, classColor: 'primary'),
+                  PersonalButton(
+                    2,
+                    onPressedCancelar,
+                    'Cancelar',
+                    icono: Icons.cancel,
+                    classColor: 'secondary',
+                  )
+                ],
+              )
+            ],
+          );
+        });
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registrar Doctor'),
-
+        title: Text("Registrar doctor"),
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 20.0,
-
-        ),
-        children: [
-          new PersonalTextField(Nombre, 'Nombre', 'Nombre Paciente', icono: Icons.accessibility),
-          Divider(),
-          new PersonalTextField(Apellidos, 'Apellidos', 'Apellidos Paciente', icono: Icons.accessibility),
-          Divider(),
-          _crearFecha(context),
-          Divider(),
-          new PersonalTextField(Usuario, 'Usuario', 'Usuario', icono: Icons.person),
-          Divider(),
-          new PersonalTextField(Contrasenia, 'Contraseña', 'Contraseña', icono: Icons.password, obs: true),
-          Divider(),
-          _ListaConsultorios(),
-          Divider(),
-          
-          new PersonalButton(id, onPressedDoctor, 'Registrar', icono: Icons.add),
-          Divider(),
-          _salirBoton(),
-        ],
-      ),
-
-    );
-  }
-
-
-  Widget _crearFecha(BuildContext context){
-    return TextField(
-      controller: _inputFieldDateController,
-      enableInteractiveSelection: false,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Fecha de Nacimiento',
-        labelText: 'Fecha de Nacimeinto',
-        suffixIcon: Icon(Icons.calendar_today),
-      ),
-      onTap: (){
-        FocusScope.of(context).requestFocus(new FocusNode());
-        _selectDate(context);
-      },
+      body: buildForm(),
     );
   }
 
   _selectDate(BuildContext context) async {
-    DateTime? picked= await showDatePicker(
-      context: context, 
-      initialDate: new DateTime.now(), 
-      firstDate: new DateTime(1960), 
-      lastDate: new DateTime.now()
-      );
-      
-    if(picked != null){
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: fechaSeleccionada,
+        firstDate: DateTime(1960),
+        lastDate: DateTime(2035),
+        initialEntryMode: DatePickerEntryMode.input,
+        helpText: 'Selecciona una fecha',
+        cancelText: 'Cancelar',
+        confirmText: 'Seleccionar');
+
+    if (picked != null && picked != fechaSeleccionada) {
       setState(() {
-        DateTime ano = DateTime.now();
-        if(ano.month >= picked.month){
-          _edad = ano.year - picked.year;
-        }else{
-          _edad = ano.year - picked.year - 1;
-        }
-        
-        _fecha = picked.toString();
-        _inputFieldDateController.text = _fecha;
+        fechaSeleccionada = picked;
+        fechaController.text =
+            fechaSeleccionada.toLocal().toString().split(' ')[0];
       });
     }
   }
-    List<DropdownMenuItem<String>> getOpcionesDropdown(){
-    List<DropdownMenuItem<String>> lista = [];
-    _consultorios.forEach((poder) {
-      lista.add(
-        DropdownMenuItem(
-          child: Text(poder),
-          value: poder,
-        )
-      );
-    });
-    return lista;
+
+  onPressedGuardarDoctor(id) async {
+    Doctor cita = Doctor(
+        idDoctor: 0,
+        nombres: nombreController.text,
+        apellidos: apellidosController.text,
+        idConsultorio: consultorioSeleccionado!.idConsultorio,
+        edad: int.parse(edadController.text),
+        fechaNaci: fechaController.text);
+    await registrarDoctor(cita);
   }
 
-  Widget _ListaConsultorios() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Container(
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.teal, width: 2.0),
-                borderRadius: BorderRadius.circular(20.0)),
-              child: DropdownButton<String>(
-                dropdownColor: Colors.teal[300],
-                elevation: 5,
-                icon: Icon(Icons.keyboard_arrow_down),
-                isExpanded: true,
-                value: _opcion,
-                style: TextStyle(color: Colors.black, fontSize: 16.0),
-                items: getOpcionesDropdown(),
-                onChanged: (opt){
-                  setState(() {
-                    _opcion = opt.toString();
-                  });
-                },
-              ),
-        ),
-      ), 
-    );
+  Future registrarDoctor(Doctor doctor) async {
+    final response = await http.post(urlDoctor, body: doctor.toJson());
+    print(response.body);
+
+    var message = json.decode(response.body);
+    _mostrarMensaje('Se ha registrado con éxito',
+        'Ha habido un error vuelva a intentarlo', message['status']);
   }
 
+  _mostrarMensaje(String mensajeExito, String mensajeError, bool status) {
+    var colorMessage;
+    var textMessage;
 
-  Widget _salirBoton(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.arrow_back
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Regresar'),
-      onPressed: (){
-        Navigator.pop(context);
-      },
-      );
+    if (status) {
+      colorMessage = Colors.green[300];
+      textMessage = mensajeExito;
+    } else {
+      colorMessage = Colors.red[300];
+      textMessage = mensajeError;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(textMessage),
+      backgroundColor: colorMessage,
+    ));
   }
-
 }
