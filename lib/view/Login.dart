@@ -94,11 +94,35 @@ class _LoginState extends State<Login> {
       ),
       label: Text('Entrar'),
       onPressed: (){
-        Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => menuPaciente())
-        );
         setState(() {
-         // login(context);
+          _nombre= nombre.text;
+          _password = password.text;
+
+          if(_nombre == "" || _password == ""){
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context){
+                return AlertDialog(
+                  title: Text('Llene los campos'),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: [Text('Es obligatorio que llene los campos')],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      }, child: Text('Aceptar'))
+                  ],
+                );
+              });
+          }else{
+            Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => menuPaciente()));
+            //login(context);
+          }
         });
       },
       style: ElevatedButton.styleFrom(
@@ -135,15 +159,14 @@ class _LoginState extends State<Login> {
       label: Text('Registrar'),
       onPressed: (){
         Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => registroPaciente())
-        );
+        MaterialPageRoute(builder: (context) => registroPaciente()));
       }, 
       );
   }
 
   var url = Uri.parse('http://192.168.1.14/tienda/login.php');
 
- /* Future<List> login(BuildContext context) async {
+  /*Future<List> login(BuildContext context) async {
     final response = await http.post(url, body: {
       "Nombre": controllerNombre.text,
       "Contrasenia": controllerPass.text,
