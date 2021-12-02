@@ -23,6 +23,10 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
       "Nombre": nombreController.text,
     });
   }*/
+
+  limpiarCajas(){
+    numeroController.clear();
+  }
   
   //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
   //NombreFuncion(ID de la funcion):
