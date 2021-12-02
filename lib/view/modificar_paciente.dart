@@ -13,7 +13,7 @@ class ModificarPaciente extends StatefulWidget {
 class _ModificarPacienteState extends State<ModificarPaciente>{
 
   TextEditingController numeroController = new TextEditingController();
-  int id = 32;
+  int id = 12;
   String _numero = '';
 
   //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:

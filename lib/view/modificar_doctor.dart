@@ -13,7 +13,7 @@ class ModificarDoctor extends StatefulWidget {
 class _ModificarDoctorState extends State<ModificarDoctor>{
 
   TextEditingController numeroController = new TextEditingController();
-  int id = 32;
+  int id = 13;
   String _numero = '';
   String _opcion = 'Volar';
 

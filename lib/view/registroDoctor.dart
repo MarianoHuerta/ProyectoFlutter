@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '/components/personal_button.dart';
+import '/components/personal_textField.dart';
+
 class registroDoctor extends StatefulWidget {
   registroDoctor({Key? key}) : super(key: key);
 
@@ -21,9 +24,15 @@ class _registroDoctorState extends State<registroDoctor> {
 
   List<String> _consultorios = ['Volar', 'Rayo X', 'Super Aliento', 'super Fuerza'];
 
-  
+  TextEditingController numeroController = new TextEditingController();
+  int id = 11;
+  String _numero = '';
   TextEditingController _inputFieldDateController = new TextEditingController();
-
+ onPressedConsultorio(id){
+    _numero = numeroController.text;
+    print('press $_numero');
+    numeroController.clear();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,19 +47,22 @@ class _registroDoctorState extends State<registroDoctor> {
 
         ),
         children: [
-          _crearNombre(),
+          new PersonalTextField(numeroController, 'Nombre', 'Nombre Paciente', icono: Icons.accessibility),
           Divider(),
-          _crearApellido(),
+          new PersonalTextField(numeroController, 'Apellidos', 'Apellidos Paciente', icono: Icons.accessibility),
+          Divider(),
+          new PersonalTextField(numeroController, 'Edad', 'Edad Paciente', icono: Icons.accessibility),
           Divider(),
           _crearFecha(context),
           Divider(),
-          _crearUsuario(),
+          new PersonalTextField(numeroController, 'Usuario', 'Usuario', icono: Icons.person),
           Divider(),
-          _crearContrasena(),
+          new PersonalTextField(numeroController, 'Contraseña', 'Contraseña', icono: Icons.password),
           Divider(),
           _ListaConsultorios(),
           Divider(),
-          _registrarBoton(),
+          
+          new PersonalButton(id, onPressedConsultorio, 'Registrar', icono: Icons.add),
           Divider(),
           _salirBoton(),
         ],
@@ -59,62 +71,6 @@ class _registroDoctorState extends State<registroDoctor> {
     );
   }
 
-  Widget _crearNombre(){
-    return TextField(
-      controller: nombre,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Nombre Completo',
-        labelText: 'Nombre',
-        suffixIcon: Icon(Icons.accessibility),
-      ),
-    );
-  }
-
-  Widget _crearApellido(){
-    return TextField(
-      controller: apellido,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Apellido Completo',
-        labelText: 'Apellido',
-        suffixIcon: Icon(Icons.accessibility),
-      ),
-    );
-  }
-
-  Widget _crearUsuario(){
-    return TextField(
-      controller: apellido,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Usuario',
-        labelText: 'Usuario',
-        suffixIcon: Icon(Icons.person),
-      ),
-    );
-  }
-
-  Widget _crearContrasena(){
-    return TextField(
-      controller: apellido,
-      obscureText: true,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Contraseña',
-        labelText: 'Contraseña',
-        suffixIcon: Icon(Icons.password),
-      ),
-    );
-  }
 
   Widget _crearFecha(BuildContext context){
     return TextField(
@@ -198,38 +154,6 @@ class _registroDoctorState extends State<registroDoctor> {
       ), 
     );
   }
-  Widget _registrarBoton(){
-    return ElevatedButton.icon(
-      icon: Icon(
-        Icons.add_circle_outline
-      ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      label: Text('Registrar'),
-      onPressed: (){
-        setState(() {
-          _nombre = nombre.text;
-          _Apellido = apellido.text;
-          
-          print("$_nombre $_Apellido $_fecha $_edad");
-          
-          nombre.text='';
-          apellido.text='';
-          _edad=0;
-        });
-      },
-      );
-  }
-
 
   Widget _salirBoton(){
     return ElevatedButton.icon(
