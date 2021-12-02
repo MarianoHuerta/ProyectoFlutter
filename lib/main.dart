@@ -1,10 +1,10 @@
-
+import '/view/modificar_admin.dart';
+import '/view/modificar_doctor.dart';
+import '/view/modificar_paciente.dart';
+import '/view/registro_doctor.dart';
+import '/view/registro_paciente.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proyecto_topicos/view/modificar_admin.dart';
-import 'package:proyecto_topicos/view/modificar_doctor.dart';
-import 'package:proyecto_topicos/view/modificar_paciente.dart';
-import 'package:proyecto_topicos/view/registro_doctor.dart';
 import 'view/login.dart';
 import '/view/registro_paciente.dart';
 

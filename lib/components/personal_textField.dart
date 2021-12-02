@@ -6,6 +6,8 @@ class PersonalTextField extends StatelessWidget {
   final String texto;
   final String label;
   final IconData icono;
+  final int maxLineas;
+  final int minLineas;
   final bool obs;
 
   const PersonalTextField(
@@ -15,7 +17,9 @@ class PersonalTextField extends StatelessWidget {
     {
     Key? key,
     this.icono = Icons.accessibility,
-    this.obs = false
+    this.obs = false,
+    this.maxLineas = 0,
+    this.minLineas = 0
   }) : super(key: key);
 
   @override
@@ -29,9 +33,11 @@ class PersonalTextField extends StatelessWidget {
         ),
         hintText: this.texto,
         labelText: this.label,
-        prefixIcon: Icon(this.icono),
+        prefixIcon: Icon(this.icono, color: Colors.teal[400]),
         //suffixIcon: Icon(Icons.meeting_room)
       ),
+      maxLines: (maxLineas != 0) ? maxLineas : 1,
+      minLines: (minLineas != 0) ? minLineas : 1,
     );
   }
 }

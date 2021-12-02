@@ -10,10 +10,10 @@ class Paciente {
   String fechaNaci = '';
 
   Paciente.fromJson(dynamic json) {
-    idPaciente = json['IdPaciente'];
+    idPaciente = int.parse(json['IdPaciente']);
     nombres = json['Nombres'];
     apellidos = json['Apellidos'];
-    edad = json['Edad'];
+    edad = int.parse(json['Edad']);
     fechaNaci = json['FechaNaci'];
   }
 
