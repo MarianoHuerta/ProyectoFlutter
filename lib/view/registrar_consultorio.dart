@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '/util/constants.dart';
 import '/components/personal_textField.dart';
 import '/components/personal_button.dart';
 
@@ -13,17 +14,23 @@ class RegistrarConsultorio extends StatefulWidget {
 class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
   
   TextEditingController numeroController = new TextEditingController();
+  var url = Uri.parse('http://$IP_CONEXION/RegistrarConsultorio.php');
   int id = 36;
-  String _numero = '';
-  String _opcion = 'Volar';
+  
+  //Función que inserta a la base de datos:
+  /*Future<void> sendData() async{
+    var res = await http.post(url.parse(url), body: {
+      "Nombre": nombreController.text,
+    });
+  }*/
 
-  List<String> _doctores = ['Volar', 'Rayo X', 'Super Aliento', 'super Fuerza'];
-
+  limpiarCajas(){
+    numeroController.clear();
+  }
+  
   //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
   //NombreFuncion(ID de la funcion):
   onPressedConsultorio(id){
-    _numero = numeroController.text;
-    print('press $_numero');
     numeroController.clear();
   }
 
@@ -48,10 +55,6 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
           Divider(),
           //[ID, Funcion, Texto, icono]:
           new PersonalButton(id, onPressedConsultorio, 'Registrar', icono: Icons.add),
-          //Divider(),
-          //new PersonalButton(id, onPressedConsultorio, 'Modificar', icono: Icons.update),
-          //Divider(),
-          //PersonalButton(id, onPressedConsultorio, 'Eliminar', icono: Icons.delete),
         ],
       )
     );

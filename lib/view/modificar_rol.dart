@@ -13,14 +13,20 @@ class ModificarRol extends StatefulWidget {
 class _ModificarRolState extends State<ModificarRol>{
 
   TextEditingController numeroController = new TextEditingController();
+  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
   int id = 32;
-  String _numero = '';
+
+  //Función que inserta a la base de datos:
+  /*Future<void> sendData() async{
+    var res = await http.post(url.parse(url), body: {
+      "Nombre": nombreController.text,
+    });
+  }*/
 
   //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
   //NombreFuncion(ID de la funcion):
   onPressedRol(id){
-    _numero = numeroController.text;
-    print('press modificar rol $_numero');
+    
     numeroController.clear();
   }
 
@@ -44,11 +50,7 @@ class _ModificarRolState extends State<ModificarRol>{
           Divider(),
           Divider(),
           //[ID, Funcion, Texto, icono]:
-          //new PersonalButton(id, onPressedRol, 'Registrar', icono: Icons.add),
-          //Divider(),
           new PersonalButton(id, onPressedRol, 'Modificar', icono: Icons.update),
-          //Divider(),
-          //PersonalButton('Eliminar', icono: Icons.delete),
         ],
       )
     );
