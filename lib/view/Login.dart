@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:proyecto_topicos/components/personal_button.dart';
 import 'package:proyecto_topicos/components/personal_textField.dart';
-import 'package:proyecto_topicos/view/MenuAdmin.dart';
+import 'package:proyecto_topicos/view/menuAdmin.dart';
 import 'package:proyecto_topicos/view/menuMedico.dart';
 import '/view/registroPaciente.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '/view/Login.dart';
+import 'view/login.dart';
 import '/view/registroPaciente.dart';
 
 import 'view/registrar_consultorio.dart';
