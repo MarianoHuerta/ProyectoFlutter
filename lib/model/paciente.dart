@@ -9,6 +9,8 @@ class Paciente {
   int edad = 0;
   String fechaNaci = '';
 
+  Paciente();
+
   Paciente.fromJson(dynamic json) {
     idPaciente = int.parse(json['IdPaciente']);
     nombres = json['Nombres'];

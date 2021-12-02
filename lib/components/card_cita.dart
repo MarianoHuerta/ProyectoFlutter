@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_topicos/model/cita.dart';
+import 'package:proyecto_topicos/model/paciente.dart';
 
 class CardCita extends StatelessWidget {
-  final int number;
+  final Cita cita;
+  final Paciente paciente;
 
-  const CardCita({Key? key, required this.number}) : super(key: key);
+  const CardCita({Key? key, required this.cita, required this.paciente})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,24 +20,24 @@ class CardCita extends StatelessWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5),
-                child: Text('Fecha: $number/$number/2021',
+                child: Text('Fecha: ${cita.fecha}',
                     style: TextStyle(
                         color: Colors.teal[800],
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0)),
               ),
               Container(
-                  child: Text('Nombre: Juan$number',
+                  child: Text('Nombre: ${paciente.nombres}',
                       style: TextStyle(fontSize: 18))),
               Container(
-                child: Text('Apellidos: López$number Gonzalez$number',
+                child: Text('Apellidos: ${paciente.apellidos}',
                     style: TextStyle(fontSize: 18)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                      child: Text('Edad: $number',
+                      child: Text('Edad: ${paciente.edad}',
                           style: TextStyle(fontSize: 18))),
                 ],
               )
@@ -41,7 +45,7 @@ class CardCita extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pushNamed(context, '/agendar-cita',
-                arguments: {'action': 'editar'});
+                arguments: {'action': 'editar', 'cita': cita});
           },
           leading: Icon(
             Icons.calendar_today_rounded,
