@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'dart:core';
 
 class Doctor {
@@ -10,13 +8,21 @@ class Doctor {
   String fechaNaci = '';
   int idConsultorio = 0;
 
+  Doctor(
+      {this.idDoctor = 0,
+      this.nombres = '',
+      this.apellidos = '',
+      this.edad = 0,
+      this.fechaNaci = '',
+      this.idConsultorio = 0});
+
   Doctor.fromJson(dynamic json) {
     idDoctor = json['IdDoctor'];
     nombres = json['Nombres'];
     apellidos = json['Apellidos'];
     edad = json['Edad'];
     fechaNaci = json['FechaNaci'];
-    idConsultorio  = json['IdConsultorio'];
+    idConsultorio = json['IdConsultorio'];
   }
 
   Map<String, dynamic> toJson() {
