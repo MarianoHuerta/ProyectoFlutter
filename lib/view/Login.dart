@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mi_micha/view/registroPaciente.dart';
 
-import 'package:proyecto_topicos/view/menuPaciente.dart';
-import 'package:proyecto_topicos/view/registroPaciente.dart';
+import 'menuPaciente.dart';
 
 //import 'package:http/http.dart' as http;
 

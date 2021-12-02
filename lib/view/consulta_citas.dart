@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:proyecto_topicos/components/card_cita.dart';
-import 'package:proyecto_topicos/components/refresh_widget.dart';
+import 'package:mi_micha/components/card_cita.dart';
+import 'package:mi_micha/components/refresh_widget.dart';
 
 class ConsultaCitasPage extends StatefulWidget {
   @override
