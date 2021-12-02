@@ -17,21 +17,37 @@ class _registroDoctorState extends State<registroDoctor> {
   final apellido = TextEditingController();
 
   String _nombre = '';
-  String _Apellido = '';
+  String _apellido = '';
+  String _usuario = '';
+  String _contrasenia = '';
   String _fecha='';
   int _edad = 0;
   String _opcion = 'Volar';
 
   List<String> _consultorios = ['Volar', 'Rayo X', 'Super Aliento', 'super Fuerza'];
 
-  TextEditingController numeroController = new TextEditingController();
+  TextEditingController Nombre = new TextEditingController();
+  TextEditingController Apellidos = new TextEditingController();
+  TextEditingController Edad = new TextEditingController();
+  TextEditingController Usuario = new TextEditingController();
+  TextEditingController Contrasenia = new TextEditingController();
+
   int id = 11;
-  String _numero = '';
   TextEditingController _inputFieldDateController = new TextEditingController();
- onPressedConsultorio(id){
-    _numero = numeroController.text;
-    print('press $_numero');
-    numeroController.clear();
+ onPressedDoctor(id){
+    _nombre = Nombre.text;
+    _apellido = Apellidos.text;
+    _fecha = _inputFieldDateController.text;
+    _usuario = Usuario.text;
+    _contrasenia = Contrasenia.text;
+    print('press $_nombre $_apellido $_fecha $_edad $_usuario $_contrasenia $_opcion');
+    Nombre.clear();
+    Apellidos.clear();
+    Edad.clear();
+    Usuario.clear();
+    Contrasenia.clear();
+    _inputFieldDateController.clear();
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -47,22 +63,20 @@ class _registroDoctorState extends State<registroDoctor> {
 
         ),
         children: [
-          new PersonalTextField(numeroController, 'Nombre', 'Nombre Paciente', icono: Icons.accessibility),
+          new PersonalTextField(Nombre, 'Nombre', 'Nombre Paciente', icono: Icons.accessibility),
           Divider(),
-          new PersonalTextField(numeroController, 'Apellidos', 'Apellidos Paciente', icono: Icons.accessibility),
-          Divider(),
-          new PersonalTextField(numeroController, 'Edad', 'Edad Paciente', icono: Icons.accessibility),
+          new PersonalTextField(Apellidos, 'Apellidos', 'Apellidos Paciente', icono: Icons.accessibility),
           Divider(),
           _crearFecha(context),
           Divider(),
-          new PersonalTextField(numeroController, 'Usuario', 'Usuario', icono: Icons.person),
+          new PersonalTextField(Usuario, 'Usuario', 'Usuario', icono: Icons.person),
           Divider(),
-          new PersonalTextField(numeroController, 'Contraseña', 'Contraseña', icono: Icons.password),
+          new PersonalTextField(Contrasenia, 'Contraseña', 'Contraseña', icono: Icons.password, obs: true),
           Divider(),
           _ListaConsultorios(),
           Divider(),
           
-          new PersonalButton(id, onPressedConsultorio, 'Registrar', icono: Icons.add),
+          new PersonalButton(id, onPressedDoctor, 'Registrar', icono: Icons.add),
           Divider(),
           _salirBoton(),
         ],
@@ -154,6 +168,7 @@ class _registroDoctorState extends State<registroDoctor> {
       ), 
     );
   }
+
 
   Widget _salirBoton(){
     return ElevatedButton.icon(
