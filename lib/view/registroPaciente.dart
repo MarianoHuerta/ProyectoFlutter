@@ -10,15 +10,19 @@ class registroPaciente extends StatefulWidget {
 }
 
 class _registroPacienteState extends State<registroPaciente> {
-  final nombre = TextEditingController();
-  final apellido = TextEditingController();
+  TextEditingController nombre = new TextEditingController();
+  TextEditingController apellido = new TextEditingController();
+  TextEditingController usuario = new TextEditingController();
+  TextEditingController contrasenia = new TextEditingController();
+  TextEditingController _inputFieldDateController = new TextEditingController();
 
   String _nombre = '';
   String _Apellido = '';
   String _fecha='';
   int _edad = 0;
-  
-  TextEditingController _inputFieldDateController = new TextEditingController();
+  String _usuario = '';
+  String _contrasenia = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,35 +85,6 @@ class _registroPacienteState extends State<registroPaciente> {
     );
   }
 
-  Widget _crearUsuario(){
-    return TextField(
-      controller: apellido,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Usuario',
-        labelText: 'Usuario',
-        suffixIcon: Icon(Icons.person),
-      ),
-    );
-  }
-
-  Widget _crearContrasena(){
-    return TextField(
-      controller: apellido,
-      obscureText: true,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Contraseña',
-        labelText: 'Contraseña',
-        suffixIcon: Icon(Icons.password),
-      ),
-    );
-  }
-
   Widget _crearFecha(BuildContext context){
     return TextField(
       controller: _inputFieldDateController,
@@ -140,16 +115,42 @@ class _registroPacienteState extends State<registroPaciente> {
     if(picked != null){
       setState(() {
         DateTime ano = DateTime.now();
-        if(ano.month >= picked.month){
-          _edad = ano.year - picked.year;
-        }else{
-          _edad = ano.year - picked.year - 1;
-        }
+        _edad = ano.year - picked.year - 1;
+        _edad = _edad + 1;
         
         _fecha = picked.toString();
         _inputFieldDateController.text = _fecha;
       });
     }
+  }
+
+  Widget _crearUsuario(){
+    return TextField(
+      controller: usuario,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        hintText: 'Ingrese su Usuario',
+        labelText: 'Usuario',
+        suffixIcon: Icon(Icons.person_sharp),
+      ),
+    );
+  }
+
+  Widget _crearContrasena(){
+    return TextField(
+      controller: contrasenia,
+      obscureText: true,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        hintText: 'Ingrese su contraseña',
+        labelText: 'contraseña',
+        suffixIcon: Icon(Icons.lock_open),
+      ),
+    );
   }
   
   Widget _registrarBoton(){
@@ -171,10 +172,31 @@ class _registroPacienteState extends State<registroPaciente> {
       label: Text('Registrar'),
       onPressed: (){
         setState(() {
-          _nombre = nombre.text;
-          _Apellido = apellido.text;
-          
-          print("$_nombre $_Apellido $_fecha $_edad");
+
+          if(nombre.text == "" || apellido.text == "" || _inputFieldDateController.text == "" || usuario.text == "" || contrasenia.text == ""){
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context){
+                return AlertDialog(
+                  title: Text('Llene los campos'),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: [Text('Es obligatorio que llene los campos')],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      }, child: Text('Aceptar'))
+                  ],
+                );
+              });
+          }else{
+            registrar();
+            Navigator.pop(context);
+          }
           
           nombre.text='';
           apellido.text='';
@@ -206,6 +228,25 @@ class _registroPacienteState extends State<registroPaciente> {
         Navigator.pop(context);
       },
       );
+  }
+
+  void registrar() {
+    print(nombre.text);
+    print(apellido.text);
+    print(_inputFieldDateController.text);
+    print(_edad);
+    print(usuario.text);
+    print(contrasenia.text);
+    /*var url = "http://ip/NameDB/RegistrarPaciente.php";
+
+    http.post(url, body: {
+      "Nombres": nombre.text,
+      "Apellidos": apellido.text,
+      "FechaNaci": _inputFieldDateController.text,
+      "Edad": _edad,
+      "Nombre": usuario.text,
+      "Contrasenia": contrasenia.text
+    });*/
   }
 
 }
