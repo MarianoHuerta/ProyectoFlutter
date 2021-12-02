@@ -10,6 +10,8 @@ import 'view/modificar_rol.dart';
 import 'view/agendar_citas.dart';
 import 'view/consulta_citas.dart';
 
+import 'util/constants.dart' as Constants;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
@@ -35,8 +37,10 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/consulta-citas': (BuildContext context) => ConsultaCitasPage(),
           '/agendar-cita': (BuildContext context) => FormCitas(),
-          '/registrar-consultorio': (BuildContext context) => RegistrarConsultorio(),
-          '/modificar-consultorio': (BuildContext context) => ModificarConsultorio(),
+          '/registrar-consultorio': (BuildContext context) =>
+              RegistrarConsultorio(),
+          '/modificar-consultorio': (BuildContext context) =>
+              ModificarConsultorio(),
           '/registrar-rol': (BuildContext context) => RegistrarRol(),
           '/modificar-rol': (BuildContext context) => ModificarRol(),
           '/registro-paciente': (BuildContext context) => registroPaciente(),
@@ -67,14 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/login');
+                  print(Constants.IP_CONEXION);
                 },
                 child: const Text('Ingresar'))
-                
           ],
         ),
-        
       ),
-      
     );
   }
 }

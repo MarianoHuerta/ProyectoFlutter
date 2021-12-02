@@ -13,10 +13,10 @@ class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
+
 String username = '';
 
 class _LoginState extends State<Login> {
-
   TextEditingController controllerNombre = TextEditingController();
   TextEditingController controllerPass = TextEditingController();
   String mensaje = '';
@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
   final nombre = TextEditingController();
   final password = TextEditingController();
 
-  String _nombre ='';
+  String _nombre = '';
   String _password = '';
 
   @override
@@ -32,13 +32,11 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(
           horizontal: 10.0,
           vertical: 20.0,
-
         ),
         children: [
           _loginUsuario(),
@@ -51,11 +49,10 @@ class _LoginState extends State<Login> {
           _botonRegistrar()
         ],
       ),
-
     );
   }
 
-  Widget _loginUsuario(){
+  Widget _loginUsuario() {
     return TextField(
       controller: nombre,
       decoration: InputDecoration(
@@ -69,7 +66,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _loginPassword(){
+  Widget _loginPassword() {
     return TextField(
       controller: password,
       obscureText: true,
@@ -81,69 +78,52 @@ class _LoginState extends State<Login> {
         labelText: 'Password',
         suffixIcon: Icon(Icons.lock_open),
       ),
-      onChanged: (valor)=>setState((){
+      onChanged: (valor) => setState(() {
         _password = valor;
       }),
     );
   }
 
-  Widget _botonLogin(){
+  Widget _botonLogin() {
     return ElevatedButton.icon(
-      icon: Icon(
-        Icons.login_outlined
-      ),
+      icon: Icon(Icons.login_outlined),
       label: Text('Entrar'),
-      onPressed: (){
-        Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => menuPaciente())
-        );
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => menuPaciente()));
         setState(() {
-         // login(context);
+          // login(context);
         });
       },
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
-      );
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          primary: Colors.teal,
+          textStyle: TextStyle(
+              color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic)),
+    );
   }
 
-
-  Widget _botonRegistrar(){
+  Widget _botonRegistrar() {
     return ElevatedButton.icon(
-      icon: Icon(
-        Icons.person_add
-      ),
+      icon: Icon(Icons.person_add),
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          primary: Colors.teal,
+          textStyle: TextStyle(
+              color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic)),
       label: Text('Registrar'),
-      onPressed: (){
-        Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => registroPaciente())
-        );
-      }, 
-      );
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => registroPaciente()));
+      },
+    );
   }
 
   var url = Uri.parse('http://192.168.1.14/tienda/login.php');
 
- /* Future<List> login(BuildContext context) async {
+  /* Future<List> login(BuildContext context) async {
     final response = await http.post(url, body: {
       "Nombre": controllerNombre.text,
       "Contrasenia": controllerPass.text,

@@ -15,9 +15,9 @@ class _registroPacienteState extends State<registroPaciente> {
 
   String _nombre = '';
   String _Apellido = '';
-  String _fecha='';
+  String _fecha = '';
   int _edad = 0;
-  
+
   TextEditingController _inputFieldDateController = new TextEditingController();
 
   @override
@@ -25,13 +25,11 @@ class _registroPacienteState extends State<registroPaciente> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Registrar Paciente'),
-
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(
           horizontal: 10.0,
           vertical: 20.0,
-
         ),
         children: [
           _crearNombre(),
@@ -49,11 +47,10 @@ class _registroPacienteState extends State<registroPaciente> {
           _salirBoton(),
         ],
       ),
-
     );
   }
 
-  Widget _crearNombre(){
+  Widget _crearNombre() {
     return TextField(
       controller: nombre,
       decoration: InputDecoration(
@@ -67,7 +64,7 @@ class _registroPacienteState extends State<registroPaciente> {
     );
   }
 
-  Widget _crearApellido(){
+  Widget _crearApellido() {
     return TextField(
       controller: apellido,
       decoration: InputDecoration(
@@ -81,7 +78,7 @@ class _registroPacienteState extends State<registroPaciente> {
     );
   }
 
-  Widget _crearUsuario(){
+  Widget _crearUsuario() {
     return TextField(
       controller: apellido,
       decoration: InputDecoration(
@@ -95,7 +92,7 @@ class _registroPacienteState extends State<registroPaciente> {
     );
   }
 
-  Widget _crearContrasena(){
+  Widget _crearContrasena() {
     return TextField(
       controller: apellido,
       obscureText: true,
@@ -110,7 +107,7 @@ class _registroPacienteState extends State<registroPaciente> {
     );
   }
 
-  Widget _crearFecha(BuildContext context){
+  Widget _crearFecha(BuildContext context) {
     return TextField(
       controller: _inputFieldDateController,
       enableInteractiveSelection: false,
@@ -122,7 +119,7 @@ class _registroPacienteState extends State<registroPaciente> {
         labelText: 'Fecha de Nacimeinto',
         suffixIcon: Icon(Icons.calendar_today),
       ),
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
         _selectDate(context);
       },
@@ -130,82 +127,65 @@ class _registroPacienteState extends State<registroPaciente> {
   }
 
   _selectDate(BuildContext context) async {
-    DateTime? picked= await showDatePicker(
-      context: context, 
-      initialDate: new DateTime.now(), 
-      firstDate: new DateTime(1960), 
-      lastDate: new DateTime.now()
-      );
-      
-    if(picked != null){
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(1960),
+        lastDate: new DateTime.now());
+
+    if (picked != null) {
       setState(() {
         DateTime ano = DateTime.now();
-        if(ano.month >= picked.month){
+        if (ano.month >= picked.month) {
           _edad = ano.year - picked.year;
-        }else{
+        } else {
           _edad = ano.year - picked.year - 1;
         }
-        
+
         _fecha = picked.toString();
         _inputFieldDateController.text = _fecha;
       });
     }
   }
-  
-  Widget _registrarBoton(){
+
+  Widget _registrarBoton() {
     return ElevatedButton.icon(
-      icon: Icon(
-        Icons.add_circle_outline
-      ),
+      icon: Icon(Icons.add_circle_outline),
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          primary: Colors.teal,
+          textStyle: TextStyle(
+              color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic)),
       label: Text('Registrar'),
-      onPressed: (){
+      onPressed: () {
         setState(() {
           _nombre = nombre.text;
           _Apellido = apellido.text;
-          
+
           print("$_nombre $_Apellido $_fecha $_edad");
-          
-          nombre.text='';
-          apellido.text='';
-          _edad=0;
+
+          nombre.text = '';
+          apellido.text = '';
+          _edad = 0;
         });
       },
-      );
+    );
   }
 
-
-  Widget _salirBoton(){
+  Widget _salirBoton() {
     return ElevatedButton.icon(
-      icon: Icon(
-        Icons.arrow_back
-      ),
+      icon: Icon(Icons.arrow_back),
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        primary: Colors.teal,
-        textStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 30,
-          fontStyle: FontStyle.italic
-        )
-      ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          primary: Colors.teal,
+          textStyle: TextStyle(
+              color: Colors.white, fontSize: 30, fontStyle: FontStyle.italic)),
       label: Text('Regresar'),
-      onPressed: (){
+      onPressed: () {
         Navigator.pop(context);
       },
-      );
+    );
   }
-
 }
