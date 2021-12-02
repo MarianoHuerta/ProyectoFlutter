@@ -17,5 +17,5 @@
 
     $stmt->close();
 
-    echo json_decode('{msg: Cita registrada}');
+    echo json_encode('{msg: Cita registrada}');
 ?>
