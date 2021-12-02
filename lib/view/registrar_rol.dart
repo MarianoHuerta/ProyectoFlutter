@@ -12,8 +12,8 @@ class RegistrarRol extends StatefulWidget {
 
 class _RegistrarRolState extends State<RegistrarRol>{
 
-  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
   TextEditingController nombreController = new TextEditingController();
+  var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
   int id = 31;
 
   //Función que inserta a la base de datos:
@@ -50,10 +50,6 @@ class _RegistrarRolState extends State<RegistrarRol>{
           Divider(),
           //[ID, Funcion, Texto, icono]:
           new PersonalButton(id, onPressedRol, 'Registrar', icono: Icons.add),
-          //Divider(),
-          //new PersonalButton(id, onPressedRol, 'Modificar', icono: Icons.update),
-          //Divider(),
-          //PersonalButton('Eliminar', icono: Icons.delete),
         ],
       )
     );
