@@ -47,54 +47,22 @@ class _registroPacienteState extends State<registroPaciente> {
           Divider(),
           _crearFecha(context),
           Divider(),
-          new PersonalTextField(usuario, 'Usuario', 'Ingresar Usuario'),
+          new PersonalTextField(usuario, 'Usuario', 'Ingresar Usuario', icono: Icons.account_box,),
           Divider(),
-          new PersonalTextField(usuario, 'Usuario', 'Ingresar Usuario',obs: true),
-          _crearContrasena(),
+          new PersonalTextField(contrasenia, 'Contraseña', 'Ingresar Contraseña', icono: Icons.lock_open ,obs: true),
           Divider(),
           new PersonalButton(id, onPressendRP, 'Registrar', icono: Icons.add),
           Divider(),
-          _registrarBoton(),
-          Divider(),
-          _salirBoton(),
+          new PersonalButton(id, onPressendSalir, 'Regresar', icono: Icons.arrow_back,)
         ],
       ),
 
     );
   }
 
-  Widget _crearNombre(){
-    return TextField(
-      controller: nombre,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Nombre Completo',
-        labelText: 'Nombre',
-        suffixIcon: Icon(Icons.accessibility),
-      ),
-    );
-  }
-
-  Widget _crearApellido(){
-    return TextField(
-      controller: apellido,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Apellido Completo',
-        labelText: 'Apellido',
-        suffixIcon: Icon(Icons.accessibility),
-      ),
-    );
-  }
 
   Widget _crearFecha(BuildContext context){
     return TextField(
-      controller: _inputFieldDateController,
-      enableInteractiveSelection: false,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
@@ -103,6 +71,8 @@ class _registroPacienteState extends State<registroPaciente> {
         labelText: 'Fecha de Nacimeinto',
         suffixIcon: Icon(Icons.calendar_today),
       ),
+      controller: _inputFieldDateController,
+      enableInteractiveSelection: false,
       onTap: (){
         FocusScope.of(context).requestFocus(new FocusNode());
         _selectDate(context);
@@ -130,33 +100,8 @@ class _registroPacienteState extends State<registroPaciente> {
     }
   }
 
-  Widget _crearUsuario(){
-    return TextField(
-      controller: usuario,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su Usuario',
-        labelText: 'Usuario',
-        suffixIcon: Icon(Icons.person_sharp),
-      ),
-    );
-  }
-
-  Widget _crearContrasena(){
-    return TextField(
-      controller: contrasenia,
-      obscureText: true,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Ingrese su contraseña',
-        labelText: 'contraseña',
-        suffixIcon: Icon(Icons.lock_open),
-      ),
-    );
+  onPressendSalir(id){
+    Navigator.pop(context);
   }
 
   onPressendRP(id){
@@ -264,7 +209,7 @@ class _registroPacienteState extends State<registroPaciente> {
       ),
       label: Text('Regresar'),
       onPressed: (){
-        Navigator.pop(context);
+        
       },
       );
   }

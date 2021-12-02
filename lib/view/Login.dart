@@ -1,6 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:proyecto_topicos/components/personal_button.dart';
+import 'package:proyecto_topicos/components/personal_textField.dart';
+import 'package:proyecto_topicos/view/MenuAdmin.dart';
+import 'package:proyecto_topicos/view/menuMedico.dart';
 import '/view/registroPaciente.dart';
 
 import 'menuPaciente.dart';
@@ -17,15 +21,13 @@ String username = '';
 
 class _LoginState extends State<Login> {
 
-  TextEditingController controllerNombre = TextEditingController();
-  TextEditingController controllerPass = TextEditingController();
+  TextEditingController Usuario = TextEditingController();
+  TextEditingController Contrasenia = TextEditingController();
   String mensaje = '';
-
-  final nombre = TextEditingController();
-  final password = TextEditingController();
 
   String _nombre ='';
   String _password = '';
+  int id = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -41,51 +43,57 @@ class _LoginState extends State<Login> {
 
         ),
         children: [
-          _loginUsuario(),
+          new PersonalTextField(Usuario, 'Usuario', 'Ingrese Usuario', icono: Icons.accessibility),
           Divider(),
-          _loginPassword(),
+          new PersonalTextField(Contrasenia, 'Contraseña', 'Ingrese Contraseña', icono: Icons.lock_open, obs: true,),
           Divider(),
-          _botonLogin(),
+          new PersonalButton(id, onPressedLogin, 'Entrar', icono: Icons.login),
           Divider(),
           Text('Si no estas registrado, unete con el boton "Registrar"'),
-          _botonRegistrar()
+          new PersonalButton(id, onPressedRegistrar, 'Registrar', icono: Icons.person_add,)
         ],
       ),
 
     );
   }
 
-  Widget _loginUsuario(){
-    return TextField(
-      controller: nombre,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Usuario',
-        labelText: 'Ingrese su Usuario',
-        suffixIcon: Icon(Icons.accessibility),
-      ),
-    );
+  onPressedLogin(id){
+    _nombre= Usuario.text;
+    _password = Contrasenia.text;
+
+    if(_nombre == "" || _password == ""){
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: Text('Llene los campos'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [Text('Es obligatorio que llene los campos')],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                }, child: Text('Aceptar'))
+            ],
+          );
+        });
+    }else{
+      Navigator.push(context, 
+      MaterialPageRoute(builder: (context) => MenuAdmin()));
+      //login(context);
+    }
   }
 
-  Widget _loginPassword(){
-    return TextField(
-      controller: password,
-      obscureText: true,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        hintText: 'Password',
-        labelText: 'Password',
-        suffixIcon: Icon(Icons.lock_open),
-      ),
-      onChanged: (valor)=>setState((){
-        _password = valor;
-      }),
-    );
+  onPressedRegistrar(id){
+    Navigator.push(context, 
+    MaterialPageRoute(builder: (context) => registroPaciente()));
   }
+
+
 
   Widget _botonLogin(){
     return ElevatedButton.icon(
@@ -95,8 +103,8 @@ class _LoginState extends State<Login> {
       label: Text('Entrar'),
       onPressed: (){
         setState(() {
-          _nombre= nombre.text;
-          _password = password.text;
+          _nombre= Usuario.text;
+          _password = Contrasenia.text;
 
           if(_nombre == "" || _password == ""){
             showDialog(
