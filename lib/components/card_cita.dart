@@ -40,8 +40,8 @@ class CardCita extends StatelessWidget {
             ],
           ),
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Número $number editado')));
+            Navigator.pushNamed(context, '/agendar-cita',
+                arguments: {'action': 'editar'});
           },
           leading: Icon(
             Icons.calendar_today_rounded,

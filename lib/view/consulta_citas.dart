@@ -47,7 +47,8 @@ class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
         body: buildList(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/agendar-cita');
+            Navigator.pushNamed(context, '/agendar-cita',
+                arguments: {'action': 'agendar'});
           },
           tooltip: 'Increment',
           child: const Icon(Icons.add),
@@ -77,7 +78,6 @@ class _ConsultaCitasPageState extends State<ConsultaCitasPage> {
         setState(() {
           data.removeAt(index);
         });
-
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Número $number eliminado')));
       },
