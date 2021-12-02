@@ -11,6 +11,9 @@ class Cita {
   int idPaciente = 0;
   int idDoctor = 0;
 
+  Cita(this.idCita, this.fecha, this.hora, this.situacion, this.precio,
+      this.idPaciente, this.idDoctor);
+
   Cita.fromJson(dynamic json) {
     idCita = json['IdCita'];
     fecha = json['Fecha'];

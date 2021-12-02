@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:proyecto_topicos/components/personal_button.dart';
+import 'package:proyecto_topicos/components/personal_textField.dart';
+import 'package:proyecto_topicos/model/cita.dart';
 
 class FormCitas extends StatefulWidget {
   @override
@@ -59,6 +62,17 @@ class _FormCitasState extends State<FormCitas> {
     }
   }
 
+  onPressedRegistrarCita(id) {
+    Cita cita = Cita(
+        0,
+        fechaSeleccionada,
+        horaSeleccionada,
+        situacionController.text,
+        precioController.text,
+        int.parse(pacienteSeleccionado.toString()),
+        0);
+  }
+
   Widget buildForm() => ListView(
         children: [
           Container(
@@ -67,17 +81,22 @@ class _FormCitasState extends State<FormCitas> {
               value: pacienteSeleccionado,
               isExpanded: true,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                icon: Icon(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                hintText: 'Seleccione un paciente',
+                labelText: 'Seleccione un paciente',
+                prefixIcon: Icon(
                   Icons.person,
                   color: Colors.teal[400],
                 ),
               ),
               items: pacientes.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
-                    child: Text(value), value: value);
+                  child: Text(value),
+                  value: value,
+                );
               }).toList(),
-              hint: Text('Selecicone un paciente'),
               onChanged: (String? value) {
                 setState(() {
                   pacienteSeleccionado = value;
@@ -86,60 +105,58 @@ class _FormCitasState extends State<FormCitas> {
             ),
           ),
           Container(
-            child: TextField(
-              minLines: 2,
-              maxLines: 5,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Situación',
-                  icon: Icon(
-                    Icons.list_alt,
-                    color: Colors.teal[400],
-                  )),
-              controller: situacionController,
-            ),
-            padding: EdgeInsets.fromLTRB(10, 15, 10, 5),
+            child: PersonalTextField(
+                situacionController, 'Situación', 'Situación',
+                icono: Icons.list_alt, maxLineas: 3, minLineas: 1),
+            padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
           ),
           Container(
-            child: TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Precio',
-                  icon: Icon(Icons.monetization_on, color: Colors.teal[400])),
-              controller: situacionController,
-            ),
-            padding: EdgeInsets.fromLTRB(10, 15, 10, 5),
+            child: PersonalTextField(precioController, 'Precio', 'Precio',
+                icono: Icons.monetization_on),
+            padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 15, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
             child: TextField(
               controller: fechaController,
               enableInteractiveSelection: false,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   labelText: 'Fecha a agendar',
-                  icon: Icon(
+                  hintText: 'Fecha',
+                  prefixIcon: Icon(
                     Icons.calendar_today,
                     color: Colors.teal[600],
                   )),
               onTap: () => _selectDate(context),
+              readOnly: true,
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 15, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
             child: TextField(
               controller: horaController,
               enableInteractiveSelection: false,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   labelText: 'Hora de la cita',
-                  icon: Icon(
+                  hintText: 'Hora',
+                  prefixIcon: Icon(
                     Icons.timer,
                     color: Colors.teal[600],
                   )),
               onTap: () => _selectHour(context),
+              readOnly: true,
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [PersonalButton(1, onPressed, texto)],
+          )
         ],
       );
 }

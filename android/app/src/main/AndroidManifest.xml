@@ -2,6 +2,7 @@
     package="com.example.proyecto_topicos">
    <application
         android:label="proyecto_topicos"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
