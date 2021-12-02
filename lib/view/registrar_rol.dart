@@ -15,26 +15,20 @@ class _RegistrarRolState extends State<RegistrarRol>{
   var url = Uri.parse('http://192.168.100.34/proyectotopicos/');
   TextEditingController nombreController = new TextEditingController();
   int id = 31;
-  //String _nombre = '';
 
-  //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
-  //NombreFuncion(ID de la funcion):
-  onPressedRol(id){
-    //_nombre = nombreController.text;
-    //print('press $nombreController.text');
-    nombreController.clear();
-  }
-
+  //Función que inserta a la base de datos:
   /*Future<void> sendData() async{
     var res = await http.post(url.parse(url), body: {
       "Nombre": nombreController.text,
     });
   }*/
-  
 
+  //Función para traer el contenido de las cajas de texto del Widget PersonalTextField:
+  //NombreFuncion(ID de la funcion):
+  onPressedRol(id){
+    //sendData();
+  }
 
-  
-    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
