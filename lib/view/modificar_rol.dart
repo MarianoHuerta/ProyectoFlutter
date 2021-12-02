@@ -51,8 +51,36 @@ class _ModificarRolState extends State<ModificarRol>{
           Divider(),
           //[ID, Funcion, Texto, icono]:
           new PersonalButton(id, onPressedRol, 'Modificar', icono: Icons.update),
+         Divider(),
+          //PersonalButton('Eliminar', icono: Icons.delete),
+          
+          _salirBoton(),
         ],
       )
     );
   }
+  
+ Widget _salirBoton(){
+    return ElevatedButton.icon(
+      icon: Icon(
+        Icons.arrow_back
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        primary: Colors.teal,
+        textStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 30,
+          fontStyle: FontStyle.italic
+        )
+      ),
+      label: Text('Regresar'),
+      onPressed: (){
+        Navigator.pop(context);
+      },
+      );
+  }
+
 }

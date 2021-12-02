@@ -55,8 +55,36 @@ class _RegistrarConsultorioState extends State<RegistrarConsultorio>{
           Divider(),
           //[ID, Funcion, Texto, icono]:
           new PersonalButton(id, onPressedConsultorio, 'Registrar', icono: Icons.add),
+         Divider(),
+          //PersonalButton('Eliminar', icono: Icons.delete),
+          
+          _salirBoton(),
         ],
       )
     );
   }
+  
+ Widget _salirBoton(){
+    return ElevatedButton.icon(
+      icon: Icon(
+        Icons.arrow_back
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        primary: Colors.teal,
+        textStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 30,
+          fontStyle: FontStyle.italic
+        )
+      ),
+      label: Text('Regresar'),
+      onPressed: (){
+        Navigator.pop(context);
+      },
+      );
+  }
+
 }

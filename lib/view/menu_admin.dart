@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_topicos/components/personal_button.dart';
+import '/components/personal_button.dart';
 
 class MenuAdmin extends StatefulWidget {
   MenuAdmin({Key? key}) : super(key: key);
@@ -32,12 +32,12 @@ class _MenuAdminState extends State<MenuAdmin> {
           Divider(),
           new PersonalButton(id, onPressedAgregarRoles, 'Agregar Roles', icono: Icons.people),
           Divider(),
-          new PersonalButton(id, onPressedAgregarConsultorio, 'Agregar Consultorio', icono: Icons.door_front),
+          new PersonalButton(id, onPressedAgregarConsultorio, 'Agregar Consultorio', icono: Icons.door_front_door_outlined),
           Divider(),
           Text('Modificar:'),
           new PersonalButton(id, onPressedModificarRoles, 'Modificar Roles', icono: Icons.manage_accounts),
           Divider(),
-          new PersonalButton(id, onPressedModificarConsultorio, 'Modificar Consultorio', icono: Icons.door_back_outlined),
+          new PersonalButton(id, onPressedModificarConsultorio, 'Modificar Consultorio', icono: Icons.door_back_door_outlined),
           Divider(),
           Text('Cerrar Sesion:'),
           new PersonalButton(id, onPressedCerrarSesion, 'Cerrar Sesion', icono: Icons.logout,),
@@ -47,27 +47,27 @@ class _MenuAdminState extends State<MenuAdmin> {
   }
 
   onPressedModificarDatos(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/modificar-admin');
   }
 
   onPressedAgregarMedico(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/registrar-doctor');
   }
 
   onPressedAgregarRoles(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/registrar-rol');
   }
 
   onPressedAgregarConsultorio(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/registrar-consultorio');
   }
 
   onPressedModificarConsultorio(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/modificar-consultorio');
   }
 
   onPressedModificarRoles(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/modificar-rol');
   }
 
   onPressedCerrarSesion(id){

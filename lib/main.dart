@@ -1,7 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proyecto_topicos/view/modificar_admin.dart';
+import 'package:proyecto_topicos/view/modificar_doctor.dart';
+import 'package:proyecto_topicos/view/modificar_paciente.dart';
+import 'package:proyecto_topicos/view/registro_doctor.dart';
 import 'view/login.dart';
-import '/view/registroPaciente.dart';
+import '/view/registro_paciente.dart';
 
 import 'view/registrar_consultorio.dart';
 import 'view/registrar_rol.dart';
@@ -39,7 +44,11 @@ class MyApp extends StatelessWidget {
           '/modificar-consultorio': (BuildContext context) => ModificarConsultorio(),
           '/registrar-rol': (BuildContext context) => RegistrarRol(),
           '/modificar-rol': (BuildContext context) => ModificarRol(),
-          '/registro-paciente': (BuildContext context) => registroPaciente(),
+          '/registrar-paciente': (BuildContext context) => registroPaciente(),
+          '/modificar-paciente': (BuildContext context) => ModificarPaciente(),
+          '/registrar-doctor': (BuildContext context) => registroDoctor(),
+          '/modificar-doctor': (BuildContext context) => ModificarDoctor(),
+          '/modificar-admin': (BuildContext context) => ModificarAdmin(),
           '/login': (BuildContext context) => Login(),
         });
   }

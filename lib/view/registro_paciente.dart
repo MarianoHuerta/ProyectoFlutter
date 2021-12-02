@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:proyecto_topicos/components/personal_button.dart';
-import 'package:proyecto_topicos/components/personal_textField.dart';
+import '/components/personal_button.dart';
+import '/components/personal_textField.dart';
 
 class registroPaciente extends StatefulWidget {
   registroPaciente({Key? key}) : super(key: key);

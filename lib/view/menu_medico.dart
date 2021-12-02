@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_topicos/components/personal_button.dart';
+import '/components/personal_button.dart';
 
-class menuPaciente extends StatefulWidget {
-  menuPaciente({Key? key}) : super(key: key);
+class menuMedico extends StatefulWidget {
+  menuMedico({Key? key}) : super(key: key);
 
   @override
-  _menuPacienteState createState() => _menuPacienteState();
+  _menuMedicoState createState() => _menuMedicoState();
 }
 
-class _menuPacienteState extends State<menuPaciente> {
-  int id = 3;
+class _menuMedicoState extends State<menuMedico> {
+  int id = 4;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu Paciente'),
+        title: Text('Menu Medico'),
       ),
 
       body: ListView(
@@ -39,14 +39,16 @@ class _menuPacienteState extends State<menuPaciente> {
   }
 
   onPressedConsultarCita(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/consulta-citas');
   }
 
   onPressedModificarDatos(id){
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => NombredelDart()));
+    Navigator.pushNamed(context, '/modificar-doctor');
   }
 
   onPressedCerrarSesion(id){
     Navigator.pop(context);
   }
+
+
 }
